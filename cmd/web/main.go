@@ -8,6 +8,11 @@ import (
 	"os"
 )
 
+type application struct {
+	errorLog *log.Logger
+	infoLog  *log.Logger
+}
+
 func main() {
 	fmt.Println("Server Starting...")
 
@@ -20,6 +25,11 @@ func main() {
 
 	infoLog := log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime)
 	errorLog := log.New(os.Stderr, "ERROR\t", log.Ldate|log.Ltime|log.Lshortfile)
+
+	app := &application{
+		errorLog: errorLog,
+		infoLog:  infoLog,
+	}
 
 	// Use the http.NewServeMux() function to initialize a new servemux, then
 	// register the home function as the handler for the "/" URL pattern.
@@ -35,9 +45,9 @@ func main() {
 	// "/static" prefix before the request reaches the file server.
 	mux.Handle("/static/", http.StripPrefix("/static", neuter(fileServer)))
 
-	mux.HandleFunc("/", home)
-	mux.HandleFunc("/ride/view", rideView)
-	mux.HandleFunc("/ride/create", rideCreate)
+	mux.HandleFunc("/", app.home)
+	mux.HandleFunc("/ride/view", app.rideView)
+	mux.HandleFunc("/ride/create", app.rideCreate)
 
 	srv := &http.Server{
 		Addr:     *addr,

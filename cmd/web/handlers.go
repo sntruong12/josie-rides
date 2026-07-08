@@ -2,14 +2,13 @@ package main
 
 import (
 	"html/template"
-	"log"
 	"net/http"
 	"strconv"
 )
 
 // Define a home handler function which writes a byte slice containing
 // "Hello from Josie Rides" as the response body.
-func home(w http.ResponseWriter, r *http.Request) {
+func (app *application) home(w http.ResponseWriter, r *http.Request) {
 	// Check if the current request URL path exactly matches "/". If it doesn't, use
 	// the http.NotFound() function to send a 404 response to the client.
 	// Importantly, we then return from the handler. If we don't return the handler
@@ -34,7 +33,7 @@ func home(w http.ResponseWriter, r *http.Request) {
 	// response to the user.
 	ts, err := template.ParseFiles(files...)
 	if err != nil {
-		log.Println(err.Error())
+		app.errorLog.Panicln(err.Error())
 		http.Error(w, "Internal Server Error", 500)
 		return
 	}
@@ -43,13 +42,13 @@ func home(w http.ResponseWriter, r *http.Request) {
 	// template as the response body.
 	err = ts.ExecuteTemplate(w, "base", nil)
 	if err != nil {
-		log.Println(err.Error())
+		app.errorLog.Panicln(err.Error())
 		http.Error(w, "Internal Server Error", 500)
 	}
 }
 
 // Add a rideView handler function.
-func rideView(w http.ResponseWriter, r *http.Request) {
+func (app *application) rideView(w http.ResponseWriter, r *http.Request) {
 	id, err := strconv.Atoi(r.URL.Query().Get("id"))
 	if err != nil || id < 1 {
 		// handle error
@@ -61,7 +60,7 @@ func rideView(w http.ResponseWriter, r *http.Request) {
 }
 
 // Add a rideCreate handler function.
-func rideCreate(w http.ResponseWriter, r *http.Request) {
+func (app *application) rideCreate(w http.ResponseWriter, r *http.Request) {
 	// don't allow any method other than POST
 	if r.Method != http.MethodPost {
 		// Use the Header().Set() method to add an 'Allow: POST' header to the
