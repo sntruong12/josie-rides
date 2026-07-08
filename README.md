@@ -15,6 +15,8 @@ This repository follows the book Let's Go by Alex Edwards. It houses golang code
 | ------- | ----------- |
 | curl -i -X POST url | sends and http request with the POST method and include the header in the output |
 | curl | in general wrap the url parameter in single quotes so that you won't have to escape some special characters |
+| jobs | displays a list of currently executing jobs/processes |
+| fg | get the job that is currently running in background to the foreground, allowing you to interact with the app in the terminal |
 
 ## Project Structure
 
