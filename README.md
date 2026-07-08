@@ -34,3 +34,6 @@ Some tradeoffs here
 1. Blast Radius, if multiple services share the internal code, a bug in internal could affect multiple services like the web server and a cloud function all at once.
 2. Slower CI/CD pipelines, new updates to code would have to be handled specifically. CI flows would have to figure what changed and which services need to be built. Tests and builds can take longer, thus impacting speed of delivery.
 
+## General Notes
+1. Continuous Integration is testing the integrity of the code when code changes happen. Typically test then build the code if it's tested fine.
+2. Continuous Delivery is releasing the tested code into production. 
