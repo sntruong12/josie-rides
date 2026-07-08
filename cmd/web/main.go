@@ -2,7 +2,6 @@ package main
 
 import (
 	"flag"
-	"fmt"
 	"log"
 	"net/http"
 	"os"
@@ -14,8 +13,6 @@ type application struct {
 }
 
 func main() {
-	fmt.Println("Server Starting...")
-
 	addr := flag.String("addr", ":4000", "HTTP network address")
 	// Define a new command-line flag with the name 'addr', a default value of ":4000"
 	// and some short help text explaining what the flag controls. The value of the
@@ -31,28 +28,10 @@ func main() {
 		infoLog:  infoLog,
 	}
 
-	// Use the http.NewServeMux() function to initialize a new servemux, then
-	// register the home function as the handler for the "/" URL pattern.
-	mux := http.NewServeMux()
-
-	// Create a file server which serves files out of the "./ui/static" directory.
-	// Note that the path given to the http.Dir function is relative to the project
-	// directory root.
-	fileServer := http.FileServer(http.Dir("./ui/static/"))
-
-	// Use the mux.Handle() function to register the file server as the handler for
-	// all URL paths that start with "/static/". For matching paths, we strip the
-	// "/static" prefix before the request reaches the file server.
-	mux.Handle("/static/", http.StripPrefix("/static", neuter(fileServer)))
-
-	mux.HandleFunc("/", app.home)
-	mux.HandleFunc("/ride/view", app.rideView)
-	mux.HandleFunc("/ride/create", app.rideCreate)
-
 	srv := &http.Server{
 		Addr:     *addr,
 		ErrorLog: errorLog,
-		Handler:  mux,
+		Handler:  app.routes(),
 	}
 
 	// Use the http.ListenAndServe() function to start a new web server. We pass in
