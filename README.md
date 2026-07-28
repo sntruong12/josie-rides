@@ -34,6 +34,37 @@ Some tradeoffs here
 1. Blast Radius, if multiple services share the internal code, a bug in internal could affect multiple services like the web server and a cloud function all at once.
 2. Slower CI/CD pipelines, new updates to code would have to be handled specifically. CI flows would have to figure what changed and which services need to be built. Tests and builds can take longer, thus impacting speed of delivery.
 
+## Data Models
+1. table name, rides
+id
+title
+description
+trail name
+distance(imperial)
+created at (time when blog post written)
+date time of ride (rode at)
+duration (of the ride)
+media(json object with videos, images and whatever else we decide to store - where value for each key is an array of strings representing the url for where the image is hosted, GCS/S3)
+
+```
+CREATE TABLE rides (
+    id                  INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    title               VARCHAR(255) NOT NULL,
+    description         LONGTEXT NOT NULL,
+    trail_name          VARCHAR(255) NULL,
+    distance_miles      DECIMAL(5,2) NOT NULL,
+    duration            TIME NOT NULL,
+    rode_at             DATETIME NOT NULL,
+    created_at          TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    media               JSON NULL,
+
+    INDEX idx_rode_at (rode_at),
+    INDEX idx_trail_name (trail_name),
+
+    CONSTRAINT chk_distance_miles_positive CHECK (distance_miles > 0)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+```
+
 ## General Notes
 1. Continuous Integration is testing the integrity of the code when code changes happen. Typically test then build the code if it's tested fine.
 2. Continuous Delivery is releasing the tested code into production. 
