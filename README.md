@@ -9,6 +9,26 @@ This repository follows the book Let's Go by Alex Edwards. It houses golang code
 | go mod init nameOfPackage | creates your golang project as a module, creates a document with all the project dependencies, your module's path, and module's go version |
 | go run pathToPackage | a shortcut that compiles your code, creates an executable binary in your /tmp directory, and then runs this binary in one step |
 
+## homebrew notes
+
+| CLI command | description |
+| ----------- | ----------- |
+| brew services list | lists all the managed services and their status |
+| brew services start mysql | starts the mysql server |
+| brew services stop mysql | stops the mysql server |
+
+## MySQL notes
+
+| SQL query/CLI command | description |
+| ----------- | ----------- |
+| CREATE DATABASE databaseName CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci; | Creates a new UTF-8 database |
+| USE databaseName; | Switches to the database named databaseName. |
+| SHOW DATABASES; | Lists all available databases on the MySQL server. |
+| SHOW TABLES; | Lists all tables in the current database. |
+| CREATE USER 'userName'@'localhost' IDENTIFIED BY 'password'; | Creates a new user named userName that can only login from localhost with the password password |
+| GRANT SELECT, INSERT, UPDATE, DELETE ON databaseName.* TO 'userName'@'localhost'; | Grants all privileges on databaseName to userName |
+| mysql -D databaseName -u userName -p | login to the database named databaseName as userName |
+
 ## Shell Commands
 
 | Command | Description |
@@ -47,6 +67,13 @@ duration (of the ride)
 media(json object with videos, images and whatever else we decide to store - where value for each key is an array of strings representing the url for where the image is hosted, GCS/S3)
 
 ```
+-- Create a new UTF-8 `josie_rides` database.
+CREATE DATABASE josie_rides CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- switch to the josie_rides db
+USE josie_rides;
+
+-- create table query
 CREATE TABLE rides (
     id                  INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     title               VARCHAR(255) NOT NULL,
@@ -63,6 +90,71 @@ CREATE TABLE rides (
 
     CONSTRAINT chk_distance_miles_positive CHECK (distance_miles > 0)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- list of indexes
+
+-- implemented
+
+-- Index for filtering or ordering by ride date/time
+CREATE INDEX idx_rode_at ON rides (rode_at);
+-- Index for searching or filtering rides by trail name
+CREATE INDEX idx_trail_name ON rides (trail_name);
+
+-- not implemented
+
+-- Index for sorting blog posts chronologically by creation date
+CREATE INDEX idx_created_at ON rides (created_at);
+-- Full-text index for searching post titles and descriptions
+CREATE FULLTEXT INDEX idx_ft_search ON rides (title, description);
+
+-- seed database with dummy data
+INSERT INTO rides (
+    title, 
+    description, 
+    trail_name, 
+    distance_miles, 
+    duration, 
+    rode_at, 
+    media
+) VALUES 
+(
+    'Morning Loop at Alviso Marina', 
+    'A scenic and flat gravel ride around the salt ponds. Great weather with light headwinds on the return leg.', 
+    'Alviso Marina Loop', 
+    14.50, 
+    '01:12:30', 
+    '2026-07-15 08:30:00', 
+    JSON_OBJECT(
+        'images', JSON_ARRAY('https://storage.googleapis.com/josie-rides-assets/alviso1.jpg', 'https://storage.googleapis.com/josie-rides-assets/alviso2.jpg'),
+        'videos', JSON_ARRAY('https://storage.googleapis.com/josie-rides-assets/alviso_clip.mp4')
+    )
+),
+(
+    'Challenging Climb up Mount Hamilton', 
+    'Tough climb with rewarding views of the Bay Area. Pushed hard on the final switchbacks.', 
+    'Mount Hamilton Road', 
+    38.25, 
+    '03:45:15', 
+    '2026-07-22 07:00:00', 
+    JSON_OBJECT(
+        'images', JSON_ARRAY('https://storage.googleapis.com/josie-rides-assets/mthamilton_summit.jpg')
+    )
+),
+(
+    'Sunset Coastal Cruise', 
+    'Easy recovery ride along the coastline. Stopped for coffee midway.', 
+    'Half Moon Bay Coastal Trail', 
+    9.75, 
+    '00:48:10', 
+    '2026-08-02 18:15:00', 
+    JSON_OBJECT(
+        'images', JSON_ARRAY('https://storage.googleapis.com/josie-rides-assets/hmb_sunset.jpg')
+    )
+);
+
+CREATE USER 'web'@'localhost' IDENTIFIED BY 'password';
+GRANT SELECT, INSERT, UPDATE, DELETE ON josie_rides.* TO 'web'@'localhost';
+
 ```
 
 ## General Notes
