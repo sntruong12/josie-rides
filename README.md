@@ -26,7 +26,7 @@ This repository follows the book Let's Go by Alex Edwards. It houses golang code
 | SHOW DATABASES; | Lists all available databases on the MySQL server. |
 | SHOW TABLES; | Lists all tables in the current database. |
 | CREATE USER 'userName'@'localhost' IDENTIFIED BY 'password'; | Creates a new user named userName that can only login from localhost with the password password |
-| GRANT SELECT, INSERT, UPDATE, DELETE ON databaseName.* TO 'userName'@'localhost'; | Grants all privileges on databaseName to userName |
+| GRANT SELECT, INSERT, UPDATE, DELETE ON databaseName.* TO 'userName'@'localhost'; | Grants specific privileges on databaseName to userName |
 | mysql -D databaseName -u userName -p | login to the database named databaseName as userName |
 
 ## Shell Commands
