@@ -162,3 +162,22 @@ GRANT SELECT, INSERT, UPDATE, DELETE ON josie_rides.* TO 'web'@'localhost';
 ## General Notes
 1. Continuous Integration is testing the integrity of the code when code changes happen. Typically test then build the code if it's tested fine.
 2. Continuous Delivery is releasing the tested code into production. 
+
+## Running locally
+Notes on starting the app locally.
+
+Setup
+1. install homebrew
+2. install mysql using `brew install mysql`
+3. set up the mysql table with info from the Data Models section
+4. you are setting up the database, creating a table in the database, then creating the user
+5. install go using `brew install go`
+6. pull the repo
+7. go to the repository root folder
+8. run `go mod tidy`
+
+Running the application
+1. in separate terminal run `brew services start mysql`
+2. `mysql -D josie_rides -u web -p`
+3. password is `password`
+4. in separate terminal, in root directory of the go project run `go run ./cmd/web`
