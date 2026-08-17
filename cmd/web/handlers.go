@@ -1,9 +1,12 @@
 package main
 
 import (
+	"encoding/json"
+	"fmt"
 	"html/template"
 	"net/http"
 	"strconv"
+	"time"
 )
 
 // Define a home handler function which writes a byte slice containing
@@ -68,5 +71,19 @@ func (app *application) rideCreate(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	w.Write([]byte("Create a new ride..."))
+	title := "dummy title"
+	description := "dummy description"
+	trailName := "dummy trail name"
+	distance := 10.0
+	duration := time.Duration(9000) * time.Second
+	rodeAt := time.Now()
+	media := json.RawMessage("null")
+
+	id, err := app.rides.Create(title, description, trailName, distance, duration, rodeAt, media)
+	if err != nil {
+		app.serverError(w, err)
+		return
+	}
+
+	http.Redirect(w, r, fmt.Sprintf("/ride/view?id=%d", id), http.StatusSeeOther)
 }
