@@ -27,6 +27,8 @@ This repository follows the book Let's Go by Alex Edwards. It houses golang code
 | USE databaseName; | Switches to the database named databaseName. |
 | SHOW DATABASES; | Lists all available databases on the MySQL server. |
 | SHOW TABLES; | Lists all tables in the current database. |
+| DESCRIBE tableName; | lists all columns and their datatypes/properties in a table |
+| ALTER TABLE tableName MODIFY COLUMN columnName NEW_DATA_TYPE NOT NULL; | changes the column type |
 | CREATE USER 'userName'@'localhost' IDENTIFIED BY 'password'; | Creates a new user named userName that can only login from localhost with the password password |
 | GRANT SELECT, INSERT, UPDATE, DELETE ON databaseName.* TO 'userName'@'localhost'; | Grants specific privileges on databaseName to userName |
 | mysql -D databaseName -u userName -p | login to the database named databaseName as userName |
@@ -65,7 +67,7 @@ trail name
 distance(imperial)
 created at (time when blog post written)
 date time of ride (rode at)
-duration (of the ride)
+duration (of the ride) in seconds
 media(json object with videos, images and whatever else we decide to store - where value for each key is an array of strings representing the url for where the image is hosted, GCS/S3)
 
 ```
@@ -82,7 +84,7 @@ CREATE TABLE rides (
     description         LONGTEXT NOT NULL,
     trail_name          VARCHAR(255) NULL,
     distance_miles      DECIMAL(5,2) NOT NULL,
-    duration            TIME NOT NULL,
+    duration            INT NOT NULL,
     rode_at             DATETIME NOT NULL,
     created_at          TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     media               JSON NULL,
@@ -124,7 +126,7 @@ INSERT INTO rides (
     'A scenic and flat gravel ride around the salt ponds. Great weather with light headwinds on the return leg.', 
     'Alviso Marina Loop', 
     14.50, 
-    '01:12:30', 
+    '19000', 
     '2026-07-15 08:30:00', 
     JSON_OBJECT(
         'images', JSON_ARRAY('https://storage.googleapis.com/josie-rides-assets/alviso1.jpg', 'https://storage.googleapis.com/josie-rides-assets/alviso2.jpg'),
@@ -136,7 +138,7 @@ INSERT INTO rides (
     'Tough climb with rewarding views of the Bay Area. Pushed hard on the final switchbacks.', 
     'Mount Hamilton Road', 
     38.25, 
-    '03:45:15', 
+    '10900', 
     '2026-07-22 07:00:00', 
     JSON_OBJECT(
         'images', JSON_ARRAY('https://storage.googleapis.com/josie-rides-assets/mthamilton_summit.jpg')
@@ -147,7 +149,7 @@ INSERT INTO rides (
     'Easy recovery ride along the coastline. Stopped for coffee midway.', 
     'Half Moon Bay Coastal Trail', 
     9.75, 
-    '00:48:10', 
+    '4500', 
     '2026-08-02 18:15:00', 
     JSON_OBJECT(
         'images', JSON_ARRAY('https://storage.googleapis.com/josie-rides-assets/hmb_sunset.jpg')
@@ -177,7 +179,6 @@ Setup
 8. run `go mod tidy`
 
 Running the application
-1. in separate terminal run `brew services start mysql`
-2. `mysql -D josie_rides -u web -p`
-3. password is `password`
-4. in separate terminal, in root directory of the go project run `go run ./cmd/web`
+1. in separate terminal run `brew services start mysql` to start your local mysql server
+2. optionally you can log into the db with `mysql -D josie_rides -u web -p` - password is `password`
+3. in separate terminal, in root directory of the go project run `go run ./cmd/web`
