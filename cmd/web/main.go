@@ -21,6 +21,7 @@ type application struct {
 
 func main() {
 	addr := flag.String("addr", ":4000", "HTTP network address")
+	// parseTime=true tells the driver to convert the TIME and DATE columns in rides table to Go time.Time values
 	dsn := flag.String("dsn", "web:password@tcp(localhost:3306)/josie_rides?parseTime=true", "MySQL Data Source Name")
 
 	flag.Parse()
