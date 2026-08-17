@@ -13,7 +13,7 @@ type Ride struct {
 	Description   string          `json:"description"`
 	TrailName     sql.NullString  `json:"trail_name"`
 	DistanceMiles float64         `json:"distance_miles"`
-	Duration      time.Duration   `json:"duration"` // in seconds
+	Duration      int             `json:"duration"` // in seconds
 	RodeAt        time.Time       `json:"rode_at"`
 	CreatedAt     time.Time       `json:"created_at"`
 	Media         json.RawMessage `json:"media"`
@@ -23,7 +23,7 @@ type RideModel struct {
 	DB *sql.DB
 }
 
-func (m *RideModel) Create(title string, description string, trailName string, distance float64, duration time.Duration, rodeAt time.Time, media json.RawMessage) (int, error) {
+func (m *RideModel) Create(title string, description string, trailName string, distance float64, duration int, rodeAt time.Time, media json.RawMessage) (int, error) {
 	stmt := `INSERT INTO rides (title, description, trail_name, distance_miles, duration, rode_at, media) VALUES (?, ?, ?, ?, ?, ?, ?)`
 
 	// exec works in 3 steps
@@ -52,7 +52,18 @@ func (m *RideModel) Create(title string, description string, trailName string, d
 }
 
 func (m *RideModel) Get(id int) (*Ride, error) {
-	return nil, nil
+	r := &Ride{}
+	stmt := `SELECT id, title, description, trail_name, distance_miles, duration, rode_at, created_at, media FROM rides WHERE id = ?`
+
+	err := m.DB.QueryRow(stmt, id).Scan(&r.ID, &r.Title, &r.Description, &r.TrailName, &r.DistanceMiles, &r.Duration, &r.RodeAt, &r.CreatedAt, &r.Media)
+	if err != nil {
+		if err == sql.ErrNoRows {
+			return nil, ErrNoRecord
+		}
+		return nil, err
+	}
+
+	return r, nil
 }
 
 func (m *RideModel) Latest() ([]*Ride, error) {

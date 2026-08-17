@@ -2,11 +2,14 @@ package main
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"html/template"
 	"net/http"
 	"strconv"
 	"time"
+
+	"github.com/sntruong12/josie-rides/internal/models"
 )
 
 // Define a home handler function which writes a byte slice containing
@@ -56,7 +59,17 @@ func (app *application) rideView(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	w.Write([]byte("Display a specific ride..."))
+	ride, err := app.rides.Get(id)
+	if err != nil {
+		if errors.Is(err, models.ErrNoRecord) {
+			app.notFound(w)
+		} else {
+			app.serverError(w, err)
+		}
+		return
+	}
+
+	fmt.Fprintf(w, "%+v", ride)
 }
 
 // Add a rideCreate handler function.
@@ -75,7 +88,7 @@ func (app *application) rideCreate(w http.ResponseWriter, r *http.Request) {
 	description := "dummy description"
 	trailName := "dummy trail name"
 	distance := 10.0
-	duration := time.Duration(9000) * time.Second
+	duration := 9000
 	rodeAt := time.Now()
 	media := json.RawMessage("null")
 
