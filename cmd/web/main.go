@@ -1,31 +1,45 @@
 package main
 
 import (
+	"database/sql"
 	"flag"
 	"log"
 	"net/http"
 	"os"
+
+	"github.com/sntruong12/josie-rides/internal/models"
+
+	_ "github.com/go-sql-driver/mysql"
 )
 
 type application struct {
 	errorLog *log.Logger
 	infoLog  *log.Logger
+
+	rides *models.RideModel
 }
 
 func main() {
 	addr := flag.String("addr", ":4000", "HTTP network address")
-	// Define a new command-line flag with the name 'addr', a default value of ":4000"
-	// and some short help text explaining what the flag controls. The value of the
-	// flag will be stored in the addr variable at runtime.
+	dsn := flag.String("dsn", "web:password@localhost/josie_rides?parseTime=true", "MySQL Data Source Name")
 
 	flag.Parse()
 
 	infoLog := log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime)
 	errorLog := log.New(os.Stderr, "ERROR\t", log.Ldate|log.Ltime|log.Lshortfile)
 
+	db, err := openDB(*dsn)
+	if err != nil {
+		errorLog.Fatal(err)
+	}
+	defer db.Close()
+
 	app := &application{
 		errorLog: errorLog,
 		infoLog:  infoLog,
+		rides: &models.RideModel{
+			DB: db,
+		},
 	}
 
 	srv := &http.Server{
@@ -34,12 +48,18 @@ func main() {
 		Handler:  app.routes(),
 	}
 
-	// Use the http.ListenAndServe() function to start a new web server. We pass in
-	// two parameters: the TCP network address to listen on (in this case ":4000")
-	// and the servemux we just created. If http.ListenAndServe() returns an error
-	// we use the log.Fatal() function to log the error message and exit. Note
-	// that any error returned by http.ListenAndServe() is always non-nil.
 	infoLog.Printf("Starting server on %s", *addr)
-	err := srv.ListenAndServe()
+	err = srv.ListenAndServe()
 	errorLog.Fatal(err)
+}
+
+func openDB(dsn string) (*sql.DB, error) {
+	db, err := sql.Open("mysql", dsn)
+	if err != nil {
+		return nil, err
+	}
+	if err = db.Ping(); err != nil {
+		return nil, err
+	}
+	return db, nil
 }

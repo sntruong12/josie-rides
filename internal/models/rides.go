@@ -19,18 +19,18 @@ type Ride struct {
 	Media         json.RawMessage `json:"media"`
 }
 
-type JosieRidesModel struct {
+type RideModel struct {
 	DB *sql.DB
 }
 
-func (m *JosieRidesModel) Create(title string, description string, trailName string, distance float64, duration time.Duration, rodeAt time.Time, media json.RawMessage) (int, error) {
+func (m *RideModel) Create(title string, description string, trailName string, distance float64, duration time.Duration, rodeAt time.Time, media json.RawMessage) (int, error) {
 	return 0, nil
 }
 
-func (m *JosieRidesModel) Get(id int) (*Ride, error) {
+func (m *RideModel) Get(id int) (*Ride, error) {
 	return nil, nil
 }
 
-func (m *JosieRidesModel) Latest() ([]*Ride, error) {
+func (m *RideModel) Latest() ([]*Ride, error) {
 	return nil, nil
 }
