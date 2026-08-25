@@ -1,0 +1,18 @@
+{{define "title"}}View Ride #{{.Ride.ID}}{{end}}
+
+{{define "main"}}
+<div class='ride'>
+    <div class='metadata'>
+        <strong>{{.Ride.Title}}</strong>
+        <p>Trail Name: {{.Ride.TrailName}}</p>
+        <p>Description: {{.Ride.Description}}</p>
+        <p>Distance (Miles): {{.Ride.DistanceMiles}}</p>
+        <p>Duration: {{.Ride.Duration}} seconds</p>
+    </div>
+    <pre><code>{{.Ride.Media}}</code></pre>
+    <div class='metadata'>
+        <time>Created: {{.Ride.CreatedAt}}</time>
+        <time>RodeAt: {{.Ride.RodeAt}}</time>
+    </div>
+</div>
+{{end}}
