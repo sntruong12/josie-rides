@@ -12,8 +12,9 @@ import (
 // At the moment it only contains one field, but we'll add more
 // to it as the build progresses.
 type templateData struct {
-	Ride  *models.Ride
-	Rides []*models.Ride
+	CurrentYear int
+	Ride        *models.Ride
+	Rides       []*models.Ride
 }
 
 func newTemplateCache() (map[string]*template.Template, error) {

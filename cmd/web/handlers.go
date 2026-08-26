@@ -29,8 +29,11 @@ func (app *application) home(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	data := app.newTemplateData(r)
+	data.Rides = rides
+
 	// Use the new render helper.
-	app.render(w, http.StatusOK, "home.html", &templateData{Rides: rides})
+	app.render(w, http.StatusOK, "home.html", data)
 }
 
 // Add a rideView handler function.
@@ -51,7 +54,10 @@ func (app *application) rideView(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	app.render(w, http.StatusOK, "view.html", &templateData{Ride: ride})
+	data := app.newTemplateData(r)
+	data.Ride = ride
+
+	app.render(w, http.StatusOK, "view.html", data)
 }
 
 // Add a rideCreate handler function.
