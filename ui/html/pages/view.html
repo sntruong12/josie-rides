@@ -12,8 +12,8 @@
     </div>
     <pre><code>{{.Media}}</code></pre>
     <div class='metadata'>
-        <time>Created: {{.CreatedAt}}</time>
-        <time>RodeAt: {{.RodeAt}}</time>
+        <time>Created: {{humanDate .CreatedAt}}</time>
+        <time>RodeAt: {{humanDate .RodeAt}}</time>
     </div>
 </div>
 {{end}}

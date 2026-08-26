@@ -3,9 +3,19 @@ package main
 import (
 	"html/template"
 	"path/filepath"
+	"time"
 
 	"github.com/sntruong12/josie-rides/internal/models"
 )
+
+func humanDate(t time.Time) string {
+	// Return the date in the format: 21 June 2024 at 16:24
+	return t.Format("Monday, January 2, 2006 at 15:04")
+}
+
+var functions = template.FuncMap{
+	"humanDate": humanDate,
+}
 
 // Define a templateData type to act as the holding structure for
 // any dynamic data that we want to pass to our HTML templates.
@@ -36,7 +46,11 @@ func newTemplateCache() (map[string]*template.Template, error) {
 		name := filepath.Base(page)
 
 		// Parse the base template file into a template set.
-		ts, err := template.ParseFiles("./ui/html/base.html")
+		// The template.FuncMap must be registered with the template set before you
+		// call the ParseFiles() method. This means we have to use template.New() to
+		// create an empty template set, use the Funcs() method to register the
+		// template.FuncMap, and then parse the file as normal.
+		ts, err := template.New(name).Funcs(functions).ParseFiles("./ui/html/base.html")
 		if err != nil {
 			return nil, err
 		}

@@ -16,8 +16,8 @@
         <td><a href="/ride/view?id={{.ID}}">{{.Title}}</a></td>
         <td>{{.DistanceMiles}}</td>
         <td>{{.Duration}}</td>
-        <td>{{.RodeAt}}</td>
-        <td>{{.CreatedAt}}</td>
+        <td>{{humanDate .RodeAt}}</td>
+        <td>{{humanDate .CreatedAt}}</td>
     </tr>
     {{end}}
 </table>
