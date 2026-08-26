@@ -2,5 +2,26 @@
 
 {{define "main"}}
 <h2>Latest Rides</h2>
+{{if .Rides}}
+<table>
+    <tr>
+        <th>Title</th>
+        <th>Distance (Miles)</th>
+        <th>Duration (seconds)</th>
+        <th>RodeAt</th>
+        <th>CreatedAt</th>
+    </tr>
+    {{range .Rides}}
+    <tr>
+        <td><a href="/ride/view?id={{.ID}}">{{.Title}}</a></td>
+        <td>{{.DistanceMiles}}</td>
+        <td>{{.Duration}}</td>
+        <td>{{.RodeAt}}</td>
+        <td>{{.CreatedAt}}</td>
+    </tr>
+    {{end}}
+</table>
+{{else}}
 <p>There's nothing to see here yet!</p>
+{{end}}
 {{end}}
