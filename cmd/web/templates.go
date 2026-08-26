@@ -9,7 +9,6 @@ import (
 )
 
 func humanDate(t time.Time) string {
-	// Return the date in the format: 21 June 2024 at 16:24
 	return t.Format("Monday, January 2, 2006 at 15:04")
 }
 
