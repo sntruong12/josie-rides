@@ -182,3 +182,7 @@ Running the application
 1. in separate terminal run `brew services start mysql` to start your local mysql server
 2. optionally you can log into the db with `mysql -D josie_rides -u web -p` - password is `password`
 3. in separate terminal, in root directory of the go project run `go run ./cmd/web`
+
+## To-Do
+1. Implement documentation of API routes
+2. Implement ability to confirm email or sms in order to create a post - admin only
