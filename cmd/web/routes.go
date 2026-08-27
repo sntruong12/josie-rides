@@ -11,11 +11,12 @@ func (app *application) routes() http.Handler {
 	mux := http.NewServeMux()
 
 	fileServer := http.FileServer(http.Dir("./ui/static/"))
-	mux.Handle("/static/", http.StripPrefix("/static", neuter(fileServer)))
+	mux.Handle("GET /static/", http.StripPrefix("/static", neuter(fileServer)))
 
-	mux.HandleFunc("/", app.home)
-	mux.HandleFunc("/ride/view", app.rideView)
-	mux.HandleFunc("/ride/create", app.rideCreate)
+	mux.HandleFunc("GET /", app.home)
+	mux.HandleFunc("GET /ride/view/{id}", app.rideView)
+	mux.HandleFunc("GET /ride/create", app.rideCreate)
+	mux.HandleFunc("POST /ride/create", app.rideCreatePost)
 
 	// Create a middleware chain containing our 'standard' middleware
 	// which will be used for every request our application receives.

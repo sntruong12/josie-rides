@@ -13,7 +13,7 @@
     </tr>
     {{range .Rides}}
     <tr>
-        <td><a href="/ride/view?id={{.ID}}">{{.Title}}</a></td>
+        <td><a href="/ride/view/{{.ID}}">{{.Title}}</a></td>
         <td>{{.DistanceMiles}}</td>
         <td>{{.Duration}}</td>
         <td>{{humanDate .RodeAt}}</td>
