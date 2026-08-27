@@ -87,7 +87,7 @@ func (app *application) rideCreatePost(w http.ResponseWriter, r *http.Request) {
 	media := json.RawMessage("null")
 
 	// validation
-	if title == "" || len(title) > 255 || description == "" || trailName == "" || len(trailName) > 255 || distance == "" || len(distance) > 8 || durationHours == "" || durationMinutes == "" || durationSeconds == "" || rodeAt == "" {
+	if title == "" || len(title) > 255 || description == "" || trailName == "" || len(trailName) > 255 || distance == "" || len(distance) > 8 || durationHours == "" || durationMinutes == "" || durationSeconds == "" || rodeAt == "" || timezone == "" {
 		app.clientError(w, http.StatusBadRequest)
 		return
 	}
