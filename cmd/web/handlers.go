@@ -8,9 +8,9 @@ import (
 	"strconv"
 	"strings"
 	"time"
-	"unicode/utf8"
 
 	"github.com/sntruong12/josie-rides/internal/models"
+	"github.com/sntruong12/josie-rides/internal/validator"
 )
 
 // Define a home handler function which writes a byte slice containing
@@ -78,7 +78,7 @@ type rideCreateForm struct {
 	Timezone        string
 	Media           string
 
-	FieldErrors map[string]string
+	validator.Validator
 }
 
 // Add a rideCreate handler function.
@@ -102,120 +102,55 @@ func (app *application) rideCreatePost(w http.ResponseWriter, r *http.Request) {
 		RodeAt:          r.PostForm.Get("rode_at"),
 		Timezone:        r.PostForm.Get("timezone"),
 		TrailName:       strings.TrimSpace(r.PostForm.Get("trail_name")),
-
-		FieldErrors: make(map[string]string),
 	}
 
 	// need to implement this later
 	media := json.RawMessage("null")
 
-	// validation
-	if form.Title == "" {
-		form.FieldErrors["title"] = "Title is required"
-	}
+	form.CheckField(validator.NotBlank(form.Title), "title", "This field cannot be blank")
+	form.CheckField(validator.MaxChars(form.Title, 255), "title", "This field must be less than 255 characters")
 
-	if utf8.RuneCountInString(form.Title) > 255 {
-		form.FieldErrors["title"] = "This field must be less than 255 characters"
-	}
+	form.CheckField(validator.NotBlank(form.Description), "description", "This field cannot be blank")
 
-	if form.Description == "" {
-		form.FieldErrors["description"] = "Description is required"
-	}
+	form.CheckField(validator.NotBlank(form.TrailName), "trail_name", "This field cannot be blank")
+	form.CheckField(validator.MaxChars(form.TrailName, 255), "trail_name", "This field must be less than 255 characters")
 
-	if form.TrailName == "" {
-		form.FieldErrors["trail_name"] = "Trail name is required"
-	}
+	form.CheckField(validator.NotBlank(form.Distance), "distance", "Distance is required")
+	form.CheckField(validator.MaxChars(form.Distance, 8), "distance", "Distance is too long")
+	form.CheckField(validator.ValidFloat(form.Distance, 0.01, 99999.99), "distance", "Distance is invalid")
 
-	if utf8.RuneCountInString(form.TrailName) > 255 {
-		form.FieldErrors["trail_name"] = "This field must be less than 255 characters"
-	}
+	form.CheckField(validator.NotBlank(form.DurationHours), "duration_hours", "Duration hours is required")
+	form.CheckField(validator.MaxChars(form.DurationHours, 2), "duration_hours", "Duration hours is too long")
+	form.CheckField(validator.ValidInt(form.DurationHours, 0, 99), "duration_hours", "Duration hours is invalid")
 
-	if form.Distance == "" {
-		form.FieldErrors["distance"] = "Distance is required"
-	}
+	form.CheckField(validator.NotBlank(form.DurationMinutes), "duration_minutes", "Duration minutes is required")
+	form.CheckField(validator.MaxChars(form.DurationMinutes, 2), "duration_minutes", "Duration minutes is too long")
+	form.CheckField(validator.ValidInt(form.DurationMinutes, 0, 59), "duration_minutes", "Duration minutes is invalid")
 
-	if utf8.RuneCountInString(form.Distance) > 8 {
-		form.FieldErrors["distance"] = "Distance is too long"
-	}
+	form.CheckField(validator.NotBlank(form.DurationSeconds), "duration_seconds", "Duration seconds is required")
+	form.CheckField(validator.MaxChars(form.DurationSeconds, 2), "duration_seconds", "Duration seconds is too long")
+	form.CheckField(validator.ValidInt(form.DurationSeconds, 0, 59), "duration_seconds", "Duration seconds is invalid")
 
-	if form.DurationHours == "" {
-		form.FieldErrors["duration_hours"] = "Duration hours is required"
-	}
+	form.CheckField(validator.NotBlank(form.RodeAt), "rode_at", "Rode at is required")
+	form.CheckField(validator.ValidTimeAndTimezone(form.RodeAt, form.Timezone), "rode_at", "Rode at is invalid")
 
-	if form.DurationMinutes == "" {
-		form.FieldErrors["duration_minutes"] = "Duration minutes is required"
-	}
+	form.CheckField(validator.NotBlank(form.Timezone), "timezone", "Timezone is required")
 
-	if form.DurationSeconds == "" {
-		form.FieldErrors["duration_seconds"] = "Duration seconds is required"
-	}
-
-	if form.RodeAt == "" {
-		form.FieldErrors["rode_at"] = "Rode at is required"
-	}
-
-	if form.Timezone == "" {
-		form.FieldErrors["timezone"] = "Timezone is required"
-
-	}
-
-	// convert distance to float64
-	distanceFloat, err := strconv.ParseFloat(form.Distance, 64)
-	if err != nil {
-		form.FieldErrors["distance"] = "Distance is invalid"
-	}
-
-	if distanceFloat <= 0 || distanceFloat > 99999.99 {
-		form.FieldErrors["distance"] = "Distance is invalid"
-	}
-
-	// convert rodeAt to time.Time utc
-	loc, err := time.LoadLocation(form.Timezone)
-	if err != nil {
-		form.FieldErrors["timezone"] = "Timezone is invalid"
-	}
-
-	rodeAtTime, err := time.ParseInLocation("2006-01-02T15:04", form.RodeAt, loc)
-	if err != nil {
-		form.FieldErrors["rode_at"] = "Rode at is invalid"
-	}
-	rodeAtUTC := rodeAtTime.UTC()
-
-	// convert duration into seconds
-	h, err := strconv.Atoi(form.DurationHours)
-	if err != nil {
-		form.FieldErrors["duration_hours"] = "Duration hours is invalid"
-	}
-
-	if h < 0 || h > 99 {
-		form.FieldErrors["duration_hours"] = "Duration hours is invalid"
-	}
-
-	m, err := strconv.Atoi(form.DurationMinutes)
-	if err != nil {
-		form.FieldErrors["duration_minutes"] = "Duration minutes is invalid"
-	}
-
-	if m < 0 || m > 59 {
-		form.FieldErrors["duration_minutes"] = "Duration minutes is invalid"
-	}
-
-	s, err := strconv.Atoi(form.DurationSeconds)
-	if err != nil {
-		form.FieldErrors["duration_seconds"] = "Duration seconds is invalid"
-	}
-
-	if s < 0 || s > 59 {
-		form.FieldErrors["duration_seconds"] = "Duration seconds is invalid"
-	}
-
-	if len(form.FieldErrors) > 0 {
+	if !form.Valid() {
 		data := app.newTemplateData(r)
 		data.Form = form
 		app.render(w, http.StatusUnprocessableEntity, "create.html", data)
 		return
 	}
 
+	// convert rodeAt to time.Time utc
+	loc, _ := time.LoadLocation(form.Timezone)
+	rodeAtTime, _ := time.ParseInLocation("2006-01-02T15:04", form.RodeAt, loc)
+	rodeAtUTC := rodeAtTime.UTC()
+	distanceFloat, _ := strconv.ParseFloat(form.Distance, 64)
+	h, _ := strconv.Atoi(form.DurationHours)
+	m, _ := strconv.Atoi(form.DurationMinutes)
+	s, _ := strconv.Atoi(form.DurationSeconds)
 	convertedDuration := (h * 3600) + (m * 60) + s
 
 	id, err := app.rides.Create(form.Title, form.Description, form.TrailName, distanceFloat, convertedDuration, rodeAtUTC, media)
