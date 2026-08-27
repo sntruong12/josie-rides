@@ -65,19 +65,65 @@ func (app *application) rideCreate(w http.ResponseWriter, r *http.Request) {
 
 // Add a rideCreate handler function.
 func (app *application) rideCreatePost(w http.ResponseWriter, r *http.Request) {
-	title := "dummy title"
-	description := "dummy description"
-	trailName := "dummy trail name"
-	distance := 10.0
-	duration := 9000
-	rodeAt := time.Now()
+	// Limit the request body size to 4096 bytes
+	// r.Body = http.MaxBytesReader(w, r.Body, 4096)
+
+	err := r.ParseForm()
+	if err != nil {
+		app.clientError(w, http.StatusBadRequest)
+		return
+	}
+
+	title := r.PostForm.Get("title")
+	description := r.PostForm.Get("description")
+	trailName := r.PostForm.Get("trail_name")
+	distance := r.PostForm.Get("distance_miles")
+	durationHours := r.PostForm.Get("duration_hours")
+	durationMinutes := r.PostForm.Get("duration_minutes")
+	durationSeconds := r.PostForm.Get("duration_seconds")
+	rodeAt := r.PostForm.Get("rode_at")
+	timezone := r.PostForm.Get("timezone")
+	// need to implement this later
 	media := json.RawMessage("null")
 
-	id, err := app.rides.Create(title, description, trailName, distance, duration, rodeAt, media)
+	// validation
+	if title == "" || len(title) > 255 || description == "" || trailName == "" || len(trailName) > 255 || distance == "" || len(distance) > 8 || durationHours == "" || durationMinutes == "" || durationSeconds == "" || rodeAt == "" {
+		app.clientError(w, http.StatusBadRequest)
+		return
+	}
+
+	// convert distance to float64
+	distanceFloat, err := strconv.ParseFloat(distance, 64)
+	if err != nil {
+		app.clientError(w, http.StatusBadRequest)
+		return
+	}
+
+	// convert rodeAt to time.Time utc
+	loc, err := time.LoadLocation(timezone)
+	if err != nil {
+		app.clientError(w, http.StatusBadRequest)
+		return
+	}
+
+	rodeAtTime, err := time.ParseInLocation("2006-01-02T15:04", rodeAt, loc)
+	if err != nil {
+		app.clientError(w, http.StatusBadRequest)
+		return
+	}
+	rodeAtUTC := rodeAtTime.UTC()
+
+	// convert duration into seconds
+	h, _ := strconv.Atoi(durationHours)
+	m, _ := strconv.Atoi(durationMinutes)
+	s, _ := strconv.Atoi(durationSeconds)
+	convertedDuration := (h * 3600) + (m * 60) + s
+
+	id, err := app.rides.Create(title, description, trailName, distanceFloat, convertedDuration, rodeAtUTC, media)
 	if err != nil {
 		app.serverError(w, err)
 		return
 	}
 
-	http.Redirect(w, r, fmt.Sprintf("/ride/view?id=%d", id), http.StatusSeeOther)
+	http.Redirect(w, r, fmt.Sprintf("/ride/view/%d", id), http.StatusSeeOther)
 }

@@ -339,3 +339,10 @@ input::-webkit-inner-spin-button {
 input[type=number] {
     -moz-appearance: textfield;
 }
+
+/* create a ride styles for duration inputs */
+.duration-inputs {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
