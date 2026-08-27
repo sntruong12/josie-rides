@@ -186,3 +186,4 @@ Running the application
 ## To-Do
 1. Implement documentation of API routes
 2. Implement ability to confirm email or sms in order to create a post - admin only
+3. implement asset upload with s3 or gcp storage

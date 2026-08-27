@@ -24,6 +24,7 @@ type templateData struct {
 	CurrentYear int
 	Ride        *models.Ride
 	Rides       []*models.Ride
+	Form        any
 }
 
 func newTemplateCache() (map[string]*template.Template, error) {
