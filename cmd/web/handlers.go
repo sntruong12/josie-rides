@@ -58,7 +58,9 @@ func (app *application) rideView(w http.ResponseWriter, r *http.Request) {
 }
 
 func (app *application) rideCreate(w http.ResponseWriter, r *http.Request) {
-	w.Write([]byte("Display the form for creating a new ride..."))
+	data := app.newTemplateData(r)
+
+	app.render(w, http.StatusOK, "create.html", data)
 }
 
 // Add a rideCreate handler function.

@@ -326,3 +326,16 @@ footer {
     color: #6A6C6F;
     text-align: center;
 }
+
+/* remove arrow keys around the number input */
+/* Chrome, Safari, Edge, and Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+    -moz-appearance: textfield;
+}
