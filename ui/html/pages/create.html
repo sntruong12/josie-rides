@@ -24,11 +24,11 @@
         <input type="text" id="create_ride_trail_name" name="trail_name" value="{{.Form.TrailName}}" required>
     </div>
     <div>
-        <label for="create_ride_distance_miles">Distance (Miles):</label>
+        <label for="create_ride_distance">Distance (Miles):</label>
         {{with .Form.FieldErrors.distance}}
         <label class='error'>{{.}}</label>
         {{end}}
-        <input type="number" id="create_ride_distance_miles" name="distance_miles" min="0" max="99999.99" step="0.01"
+        <input type="number" id="create_ride_distance" name="distance" min="0" max="99999.99" step="0.01"
             value="{{.Form.Distance}}" required>
     </div>
     <div>

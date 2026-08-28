@@ -67,42 +67,35 @@ func (app *application) rideCreate(w http.ResponseWriter, r *http.Request) {
 }
 
 type rideCreateForm struct {
-	Title           string
-	Description     string
-	TrailName       string
-	Distance        string
-	DurationHours   string
-	DurationMinutes string
-	DurationSeconds string
-	RodeAt          string
-	Timezone        string
-	Media           string
+	Title           string `form:"title"`
+	Description     string `form:"description"`
+	TrailName       string `form:"trail_name"`
+	Distance        string `form:"distance"`
+	DurationHours   string `form:"duration_hours"`
+	DurationMinutes string `form:"duration_minutes"`
+	DurationSeconds string `form:"duration_seconds"`
+	RodeAt          string `form:"rode_at"`
+	Timezone        string `form:"timezone"`
+	Media           string `form:"media"`
 
-	validator.Validator
+	validator.Validator `form:"-"`
 }
 
 // Add a rideCreate handler function.
 func (app *application) rideCreatePost(w http.ResponseWriter, r *http.Request) {
 	// Limit the request body size to 4096 bytes
 	// r.Body = http.MaxBytesReader(w, r.Body, 4096)
+	var form rideCreateForm
 
-	err := r.ParseForm()
+	err := app.decodePostForm(r, &form)
 	if err != nil {
 		app.clientError(w, http.StatusBadRequest)
 		return
 	}
 
-	form := rideCreateForm{
-		Title:           strings.TrimSpace(r.PostForm.Get("title")),
-		Description:     strings.TrimSpace(r.PostForm.Get("description")),
-		Distance:        r.PostForm.Get("distance_miles"),
-		DurationHours:   r.PostForm.Get("duration_hours"),
-		DurationMinutes: r.PostForm.Get("duration_minutes"),
-		DurationSeconds: r.PostForm.Get("duration_seconds"),
-		RodeAt:          r.PostForm.Get("rode_at"),
-		Timezone:        r.PostForm.Get("timezone"),
-		TrailName:       strings.TrimSpace(r.PostForm.Get("trail_name")),
-	}
+	form.Title = strings.TrimSpace(form.Title)
+	form.Description = strings.TrimSpace(form.Description)
+	form.TrailName = strings.TrimSpace(form.TrailName)
 
 	// need to implement this later
 	media := json.RawMessage("null")
