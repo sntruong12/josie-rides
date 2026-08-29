@@ -13,10 +13,15 @@ func (app *application) routes() http.Handler {
 	fileServer := http.FileServer(http.Dir("./ui/static/"))
 	mux.Handle("GET /static/", http.StripPrefix("/static", neuter(fileServer)))
 
-	mux.HandleFunc("GET /", app.home)
-	mux.HandleFunc("GET /ride/view/{id}", app.rideView)
-	mux.HandleFunc("GET /ride/create", app.rideCreate)
-	mux.HandleFunc("POST /ride/create", app.rideCreatePost)
+	// Create a new middleware chain containing the middleware specific to our
+	// dynamic application routes. For now, this chain will only contain the
+	// LoadAndSave session middleware but we'll add more to it later.
+	dynamic := alice.New(app.sessionManager.LoadAndSave)
+
+	mux.Handle("GET /", dynamic.ThenFunc(app.home))
+	mux.Handle("GET /ride/view/{id}", dynamic.ThenFunc(app.rideView))
+	mux.Handle("GET /ride/create", dynamic.ThenFunc(app.rideCreate))
+	mux.Handle("POST /ride/create", dynamic.ThenFunc(app.rideCreatePost))
 
 	// Create a middleware chain containing our 'standard' middleware
 	// which will be used for every request our application receives.

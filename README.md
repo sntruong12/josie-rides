@@ -161,6 +161,17 @@ GRANT SELECT, INSERT, UPDATE, DELETE ON josie_rides.* TO 'web'@'localhost';
 
 ```
 
+2. sessions table
+```
+CREATE TABLE sessions (
+    token CHAR(43) PRIMARY KEY,
+    data BLOB NOT NULL,
+    expiry TIMESTAMP(6) NOT NULL
+);
+
+CREATE INDEX sessions_expiry_idx ON sessions (expiry);
+```
+
 ## General Notes
 1. Continuous Integration is testing the integrity of the code when code changes happen. Typically test then build the code if it's tested fine.
 2. Continuous Delivery is releasing the tested code into production. 
