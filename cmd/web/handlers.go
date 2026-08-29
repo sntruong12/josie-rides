@@ -152,5 +152,9 @@ func (app *application) rideCreatePost(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// Use the Put() method to add a string value ("Ride successfully
+	// created!") and the corresponding key ("flash") to the session data.
+	app.sessionManager.Put(r.Context(), "flash", "Ride successfully created!")
+
 	http.Redirect(w, r, fmt.Sprintf("/ride/view/%d", id), http.StatusSeeOther)
 }
