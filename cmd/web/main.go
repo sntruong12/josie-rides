@@ -57,10 +57,11 @@ func main() {
 	// Use the scs.New() function to initialize a new session manager. Then we
 	// configure it to use our MySQL database as the session store, and set a
 	// lifetime of 12 hours (so that sessions automatically expire 12 hours
-	// after first being created).
+	// after first being created). Session will only be sent over https connections.
 	sessionManager := scs.New()
 	sessionManager.Store = mysqlstore.New(db)
 	sessionManager.Lifetime = 12 * time.Hour
+	sessionManager.Cookie.Secure = true
 
 	app := &application{
 		errorLog: errorLog,
@@ -80,7 +81,7 @@ func main() {
 	}
 
 	infoLog.Printf("Starting server on %s", *addr)
-	err = srv.ListenAndServe()
+	err = srv.ListenAndServeTLS("./tls/cert.pem", "./tls/key.pem")
 	errorLog.Fatal(err)
 }
 

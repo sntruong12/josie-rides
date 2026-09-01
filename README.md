@@ -175,6 +175,7 @@ CREATE INDEX sessions_expiry_idx ON sessions (expiry);
 ## General Notes
 1. Continuous Integration is testing the integrity of the code when code changes happen. Typically test then build the code if it's tested fine.
 2. Continuous Delivery is releasing the tested code into production. 
+3. HTTPS is essentially HTTP sent across a TLS transport layer security connection, where the data is encrypted and signed to ensure the privacy and integrity during transit.
 
 ## Running locally
 Notes on starting the app locally.
@@ -198,3 +199,4 @@ Running the application
 1. Implement documentation of API routes
 2. Implement ability to confirm email or sms in order to create a post - admin only
 3. implement asset upload with s3 or gcp storage
+4. implement tls cert/key when deploying to cloud
