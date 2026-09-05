@@ -200,3 +200,4 @@ Running the application
 2. Implement ability to confirm email or sms in order to create a post - admin only
 3. implement asset upload with s3 or gcp storage
 4. implement tls cert/key when deploying to cloud
+5. implement sqlc for the repo layer - ddl and dml sql to generate go code
