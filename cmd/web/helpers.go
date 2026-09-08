@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"net/http"
 	"runtime/debug"
+	"strings"
 	"time"
 
 	"github.com/go-playground/form/v4"
@@ -83,6 +84,13 @@ func (app *application) decodePostForm(r *http.Request, dst any) error {
 	err := r.ParseForm()
 	if err != nil {
 		return err
+	}
+
+	// trim prefix/suffix space characters
+	for key, values := range r.PostForm {
+		for i, v := range values {
+			r.PostForm[key][i] = strings.TrimSpace(v)
+		}
 	}
 	// Call Decode() on our decoder instance, passing the target destination as
 	// the first parameter.

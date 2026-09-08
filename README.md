@@ -214,3 +214,4 @@ Running the application
 3. implement asset upload with s3 or gcp storage
 4. implement tls cert/key when deploying to cloud
 5. implement sqlc for the repo layer generation - ddl and dml sql to generate go code
+6. email exist sql query before signup?
