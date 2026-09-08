@@ -23,6 +23,7 @@ type application struct {
 	infoLog  *log.Logger
 
 	rides *models.RideModel
+	users *models.UserModel
 
 	templateCache map[string]*template.Template
 
@@ -65,11 +66,10 @@ func main() {
 	sessionManager.Cookie.Secure = true
 
 	app := &application{
-		errorLog: errorLog,
-		infoLog:  infoLog,
-		rides: &models.RideModel{
-			DB: db,
-		},
+		errorLog:       errorLog,
+		infoLog:        infoLog,
+		rides:          &models.RideModel{DB: db},
+		users:          &models.UserModel{DB: db},
 		templateCache:  templateCache,
 		formDecoder:    formDecoder,
 		sessionManager: sessionManager,

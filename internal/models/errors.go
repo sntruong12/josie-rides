@@ -4,4 +4,8 @@ import (
 	"errors"
 )
 
-var ErrNoRecord = errors.New("models: no matching record found")
+var (
+	ErrDuplicateEmail     = errors.New("models: duplicate email")
+	ErrInvalidCredentials = errors.New("models: invalid credentials")
+	ErrNoRecord           = errors.New("models: no matching record found")
+)
