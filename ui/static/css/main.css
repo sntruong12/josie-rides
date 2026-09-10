@@ -133,7 +133,7 @@ nav a.live:hover {
 }
 
 nav a.live:after {
-    content: '';
+    content: "";
     display: block;
     position: relative;
     left: calc(50% - 7px);

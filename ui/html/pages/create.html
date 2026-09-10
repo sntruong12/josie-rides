@@ -3,32 +3,32 @@
 {{define "main"}}
 <form action="/ride/create" method="POST" required>
     <!-- Include the CSRF token -->
-    <input type='hidden' name='csrf_token' value='{{.CSRFToken}}'>
+    <input type="hidden" name="csrf_token" value="{{.CSRFToken}}">
     <div>
         <label for="create_ride_title">Title:</label>
         {{with .Form.FieldErrors.title}}
-        <label class='error'>{{.}}</label>
+        <label class="error">{{.}}</label>
         {{end}}
         <input type="text" id="create_ride_title" name="title" required value="{{.Form.Title}}">
     </div>
     <div>
         <label for="create_ride_description">Description:</label>
         {{with .Form.FieldErrors.description}}
-        <label class='error'>{{.}}</label>
+        <label class="error">{{.}}</label>
         {{end}}
         <textarea id="create_ride_description" name="description" required>{{.Form.Description}}</textarea>
     </div>
     <div>
         <label for="create_ride_trail_name">Trail Name:</label>
         {{with .Form.FieldErrors.trail_name}}
-        <label class='error'>{{.}}</label>
+        <label class="error">{{.}}</label>
         {{end}}
         <input type="text" id="create_ride_trail_name" name="trail_name" value="{{.Form.TrailName}}" required>
     </div>
     <div>
         <label for="create_ride_distance">Distance (Miles):</label>
         {{with .Form.FieldErrors.distance}}
-        <label class='error'>{{.}}</label>
+        <label class="error">{{.}}</label>
         {{end}}
         <input type="number" id="create_ride_distance" name="distance" min="0" max="99999.99" step="0.01"
             value="{{.Form.Distance}}" required>
@@ -37,19 +37,19 @@
         <label for="create_ride_duration_hours">Duration:</label>
         <div class="duration-inputs">
             {{with .Form.FieldErrors.duration_hours}}
-            <label class='error'>{{.}}</label>
+            <label class="error">{{.}}</label>
             {{end}}
             <input type="number" id="create_ride_duration_hours" name="duration_hours" min="0" max="99" step="1"
                 placeholder="HH" value="{{.Form.DurationHours}}" required>
             <span>:</span>
             {{with .Form.FieldErrors.duration_minutes}}
-            <label class='error'>{{.}}</label>
+            <label class="error">{{.}}</label>
             {{end}}
             <input type="number" id="create_ride_duration_minutes" name="duration_minutes" min="0" max="59" step="1"
                 placeholder="MM" value="{{.Form.DurationMinutes}}" required>
             <span>:</span>
             {{with .Form.FieldErrors.duration_seconds}}
-            <label class='error'>{{.}}</label>
+            <label class="error">{{.}}</label>
             {{end}}
             <input type="number" id="create_ride_duration_seconds" name="duration_seconds" min="0" max="59" step="1"
                 placeholder="SS" value="{{.Form.DurationSeconds}}" required>
@@ -58,14 +58,14 @@
     <div>
         <label for="create_ride_rode_at">Rode At:</label>
         {{with .Form.FieldErrors.rode_at}}
-        <label class='error'>{{.}}</label>
+        <label class="error">{{.}}</label>
         {{end}}
         <input type="datetime-local" id="create_ride_rode_at" name="rode_at" value="{{.Form.RodeAt}}" required>
     </div>
     <div>
         <label for="create_ride_timezone">Time Zone:</label>
         {{with .Form.FieldErrors.timezone}}
-        <label class='error'>{{.}}</label>
+        <label class="error">{{.}}</label>
         {{end}}
         <select id="create_ride_timezone" name="timezone" value="{{.Form.Timezone}}" required>
             <option value="UTC">UTC</option>
@@ -74,7 +74,7 @@
     <div>
         <label for="create_ride_media">Media:</label>
         {{with .Form.FieldErrors.media}}
-        <label class='error'>{{.}}</label>
+        <label class="error">{{.}}</label>
         {{end}}
         <input type="file" id="create_ride_media" accept="image/*,video/*" name="media" value="{{.Form.Media}}"
             multiple="true">
