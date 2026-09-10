@@ -2,6 +2,8 @@
 
 {{define "main"}}
 <form action="/ride/create" method="POST" required>
+    <!-- Include the CSRF token -->
+    <input type='hidden' name='csrf_token' value='{{.CSRFToken}}'>
     <div>
         <label for="create_ride_title">Title:</label>
         {{with .Form.FieldErrors.title}}

@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"net/http"
 	"strings"
+
+	"github.com/justinas/nosurf"
 )
 
 // Disables directory listing
@@ -78,4 +80,16 @@ func (app *application) requireAuthentication(next http.Handler) http.Handler {
 		// And call the next handler in the chain.
 		next.ServeHTTP(w, r)
 	})
+}
+
+// Create a NoSurf middleware function which uses a customized CSRF cookie with
+// the Secure, Path and HttpOnly attributes set.
+func noSurf(next http.Handler) http.Handler {
+	csrfHandler := nosurf.New(next)
+	csrfHandler.SetBaseCookie(http.Cookie{
+		HttpOnly: true,
+		Path:     "/",
+		Secure:   true,
+	})
+	return csrfHandler
 }
