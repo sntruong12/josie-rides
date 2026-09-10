@@ -11,7 +11,11 @@ import (
 )
 
 func humanDate(t time.Time) string {
-	return t.Format("Monday, January 2, 2006 at 15:04")
+	if t.IsZero() {
+		return ""
+	}
+
+	return t.UTC().Format("Monday, January 2, 2006 at 15:04")
 }
 
 var functions = template.FuncMap{

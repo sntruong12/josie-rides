@@ -10,6 +10,7 @@ This repository follows the book Let's Go by Alex Edwards. It houses golang code
 | go mod tidy | makes sure the go.mod matches the source code in the module, removes unused dependencies, and adds any missing dependencies |
 | go run pathToPackage | a shortcut that compiles your code, creates an executable binary in your /tmp directory, and then runs this binary in one step |
 | go get pathToPackage | add dependencies to current module and install them |
+| go test -v pathToPackage | runs all tests in the project and shows verbose output |
 
 ## homebrew notes
 
