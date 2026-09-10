@@ -189,6 +189,8 @@ ALTER TABLE users ADD CONSTRAINT users_uc_email UNIQUE (email);
 1. Continuous Integration is testing the integrity of the code when code changes happen. Typically test then build the code if it's tested fine.
 2. Continuous Delivery is releasing the tested code into production. 
 3. HTTPS is essentially HTTP sent across a TLS transport layer security connection, where the data is encrypted and signed to ensure the privacy and integrity during transit.
+4. Hashing is one way, you can never get the original value back. One way irreversible transformation.
+5. Encryption is two way, meaning it's reversible. Hence encrypt and decrypt.
 
 ## Running locally
 Notes on starting the app locally.
