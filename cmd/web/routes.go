@@ -16,7 +16,7 @@ func (app *application) routes() http.Handler {
 	// that it satisfies the http.FileSystem interface. We then pass that to the
 	// http.FileServer() function to create the file server handler.
 	fileServer := http.FileServer(http.FS(ui.Files))
-	mux.Handle("GET /static/*filepath", neuter(fileServer))
+	mux.Handle("GET /static/", neuter(fileServer))
 
 	// Create a new middleware chain containing the middleware specific to our
 	// dynamic application routes. For now, this chain will only contain the
