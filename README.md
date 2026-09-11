@@ -9,8 +9,17 @@ This repository follows the book Let's Go by Alex Edwards. It houses golang code
 | go mod init nameOfPackage | creates your golang project as a module, creates a document with all the project dependencies, your module's path, and module's go version |
 | go mod tidy | makes sure the go.mod matches the source code in the module, removes unused dependencies, and adds any missing dependencies |
 | go run pathToPackage | a shortcut that compiles your code, creates an executable binary in your /tmp directory, and then runs this binary in one step |
+| go build -o web cmd/web/main.go | builds the application as an executable named "web" in the root directory.  |
+| ./web | runs the executable file web |
 | go get pathToPackage | add dependencies to current module and install them |
 | go test -v pathToPackage | runs all tests in the project and shows verbose output |
+| go test ./... | runs all tests in the module |
+| go test -v -run="^TestPing$" pathToPackage | runs a single test in the module |
+| go test -count=1 pathToPackage | turns off caching for tests |
+| go clean -testcache | clears cache for tests |
+| go test -failfast pathToPackage | stops testing after first test failure |
+| go test -parallel 4 pathToPackage | runs 4 tests in parallel that are using the t.Parallel() function in the test function. This overrides the GOMAXPROCS env var which is the default parallel test run limit |
+| go test -race pathToPackage | runs race detector to find race conditions in your code, can be used with parallel tests and code leveraging concurrency |
 
 ## homebrew notes
 
