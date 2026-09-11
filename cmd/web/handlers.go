@@ -278,7 +278,7 @@ func (app *application) userLoginPost(w http.ResponseWriter, r *http.Request) {
 	// Add the ID of the current user to the session, so that they are now
 	// 'logged in'.
 	app.sessionManager.Put(r.Context(), "authenticatedUserID", id)
-	// Redirect the user to the create snippet page.
+	// Redirect the user to the create ride page.
 	http.Redirect(w, r, "/ride/create", http.StatusSeeOther)
 }
 
