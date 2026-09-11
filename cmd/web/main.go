@@ -22,8 +22,8 @@ type application struct {
 	errorLog *log.Logger
 	infoLog  *log.Logger
 
-	rides *models.RideModel
-	users *models.UserModel
+	rides models.RideModelInterface
+	users models.UserModelInterface
 
 	templateCache map[string]*template.Template
 

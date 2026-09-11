@@ -6,6 +6,12 @@ import (
 	"time"
 )
 
+type RideModelInterface interface {
+	Create(title string, description string, trailName string, distance float64, duration int, rodeAt time.Time, media json.RawMessage) (int, error)
+	Get(id int) (*Ride, error)
+	Latest() ([]*Ride, error)
+}
+
 // Ride represents a row in the rides table.
 type Ride struct {
 	ID            uint            `json:"id"`
