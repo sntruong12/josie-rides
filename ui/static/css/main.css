@@ -233,42 +233,42 @@ button:hover {
     cursor: pointer;
 }
 
-.snippet {
+.ride {
     background-color: #FFFFFF;
     border: 1px solid #E4E5E7;
     border-radius: 3px;
 }
 
-.snippet pre {
+.ride pre {
     padding: 18px;
     border-top: 1px solid #E4E5E7;
     border-bottom: 1px solid #E4E5E7;
 }
 
-.snippet .metadata {
+.ride .metadata {
     background-color: #F7F9FA;
     color: #6A6C6F;
     padding: 0.75em 18px;
     overflow: auto;
 }
 
-.snippet .metadata span {
+.ride .metadata span {
     float: right;
 }
 
-.snippet .metadata strong {
+.ride .metadata strong {
     color: #34495E;
 }
 
-.snippet .metadata time {
+.ride .metadata time {
     display: inline-block;
 }
 
-.snippet .metadata time:first-child {
+.ride .metadata time:first-child {
     float: left;
 }
 
-.snippet .metadata time:last-child {
+.ride .metadata time:last-child {
     float: right;
 }
 
