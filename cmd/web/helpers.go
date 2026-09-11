@@ -83,7 +83,7 @@ func (app *application) newTemplateData(r *http.Request) *templateData {
 // is the target destination that we want to decode the form data into.
 func (app *application) decodePostForm(r *http.Request, dst any) error {
 	// Call ParseForm() on the request, in the same way that we did in our
-	// createSnippetPost handler.
+	// createRidePost handler.
 	err := r.ParseForm()
 	if err != nil {
 		return err
