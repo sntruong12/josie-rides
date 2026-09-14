@@ -20,6 +20,9 @@ This repository follows the book Let's Go by Alex Edwards. It houses golang code
 | go test -failfast pathToPackage | stops testing after first test failure |
 | go test -parallel 4 pathToPackage | runs 4 tests in parallel that are using the t.Parallel() function in the test function. This overrides the GOMAXPROCS env var which is the default parallel test run limit |
 | go test -race pathToPackage | runs race detector to find race conditions in your code, can be used with parallel tests and code leveraging concurrency |
+| go test -cover pathToPackage | metrics of test coverage overall  |
+| go test -coverprofile=coverage.out pathToPackage | more detailed breakdown of test coverage by method and function |
+| go tool cover -html=/tmp/profile.out | generates an html file with visualizations of test coverage, open in browser |
 
 ## homebrew notes
 
