@@ -45,7 +45,7 @@ This repository follows the book Let's Go by Alex Edwards. It houses golang code
 | CREATE USER 'userName'@'localhost' IDENTIFIED BY 'password'; | Creates a new user named userName that can only login from localhost with the password password |
 | GRANT SELECT, INSERT, UPDATE, DELETE ON databaseName.* TO 'userName'@'localhost'; | Grants specific privileges on databaseName to userName |
 | mysql -D databaseName -u userName -p | login to the database named databaseName as userName |
-|mysql.users|
+| mysql.users | table built into mysql to keep track of users. Each row is a user, each column is a property of that user |
 
 ## Shell Commands
 
