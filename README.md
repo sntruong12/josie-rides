@@ -26,7 +26,7 @@ This repository follows the book Let's Go by Alex Edwards. It houses golang code
 
 ## homebrew notes
 
-| CLI command | description |
+| CLI command | Description |
 | ----------- | ----------- |
 | brew services list | lists all the managed services and their status |
 | brew services start mysql | starts the mysql server |
@@ -34,7 +34,7 @@ This repository follows the book Let's Go by Alex Edwards. It houses golang code
 
 ## MySQL notes
 
-| SQL query/CLI command | description |
+| SQL query/CLI command | Description |
 | ----------- | ----------- |
 | CREATE DATABASE databaseName CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci; | Creates a new UTF-8 database |
 | USE databaseName; | Switches to the database named databaseName. |
@@ -58,7 +58,7 @@ This repository follows the book Let's Go by Alex Edwards. It houses golang code
 
 ## Project Structure
 
-| directory/file | description |
+| Directory/File | Description |
 | -------------- | ----------- |
 | cmd | The cmd directory will contain the application-specific code for the executable applications in the project. For now we’ll have just one executable application — the web application — which will live under the cmd/web directory. |
 | internal | The internal directory will contain the ancillary non-application-specific code used in the project. We’ll use it to hold potentially reusable code like validation helpers and the SQL database models for the project. |
