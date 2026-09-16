@@ -27,6 +27,7 @@ func (app *application) routes() http.Handler {
 
 	// Unprotected application routes using the "dynamic" middleware chain.
 	mux.Handle("GET /", dynamic.ThenFunc(app.home))
+	mux.Handle("GET /about", dynamic.ThenFunc(app.aboutView))
 	mux.Handle("GET /ride/view/{id}", dynamic.ThenFunc(app.rideView))
 
 	// Add the five new routes, all of which use our 'dynamic' middleware chain.

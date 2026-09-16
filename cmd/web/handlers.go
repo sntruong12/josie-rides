@@ -13,7 +13,6 @@ import (
 )
 
 // Define a home handler function which writes a byte slice containing
-// "Hello from Josie Rides" as the response body.
 func (app *application) home(w http.ResponseWriter, r *http.Request) {
 	// handles edge case when users nav to non existing routes
 	if r.URL.Path != "/" {
@@ -32,6 +31,13 @@ func (app *application) home(w http.ResponseWriter, r *http.Request) {
 
 	// Use the new render helper.
 	app.render(w, http.StatusOK, "home.html", data)
+}
+
+// aboutView serves the about html page
+func (app *application) aboutView(w http.ResponseWriter, r *http.Request) {
+	data := app.newTemplateData(r)
+
+	app.render(w, http.StatusOK, "about.html", data)
 }
 
 // Add a rideView handler function.
