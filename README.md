@@ -214,6 +214,10 @@ ALTER USER 'test_web'@'localhost' IDENTIFIED BY 'pass';
 3. HTTPS is essentially HTTP sent across a TLS transport layer security connection, where the data is encrypted and signed to ensure the privacy and integrity during transit.
 4. Hashing is one way, you can never get the original value back. One way irreversible transformation.
 5. Encryption is two way, meaning it's reversible. Hence encrypt and decrypt.
+6. Table-driven is used to described tests where the test cases are organized in a table format, it's an idiomatic way for writing unit tests in Go.
+7. Unit tests are tests that are run on individual components of the application. Functions, err checks within each function, etc.
+8. End to end testing is a testing methodology where you test the entire application from end to end, including the UI, backend, and database. Typically done to simulate the true user experience.
+9. Integration tests verify that two or more systems that connect to each other are working, e.g. database and application.
 
 ## Running locally
 Notes on starting the app locally.
