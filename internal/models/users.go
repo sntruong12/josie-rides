@@ -14,6 +14,7 @@ type UserModelInterface interface {
 	Create(name, email, password string) error
 	Authenticate(email, password string) (int, error)
 	Exists(id int) (bool, error)
+	Get(id int) (*User, error)
 }
 
 // Define a new User type. Notice how the field names and types align
@@ -102,4 +103,23 @@ func (m *UserModel) Exists(id int) (bool, error) {
 
 	err := m.DB.QueryRow(stmt, id).Scan(&exists)
 	return exists, err
+}
+
+// Get retrieves the name, email, and created fields for a specific user based
+// on their user ID. If no matching user is found, it returns ErrNoRecord.
+func (m *UserModel) Get(id int) (*User, error) {
+	var user User
+
+	stmt := `SELECT name, email, created FROM users WHERE id = ?`
+
+	err := m.DB.QueryRow(stmt, id).Scan(&user.Name, &user.Email, &user.Created)
+	if err != nil {
+		if errors.Is(err, sql.ErrNoRows) {
+			return nil, ErrNoRecord
+		} else {
+			return nil, err
+		}
+	}
+
+	return &user, nil
 }

@@ -217,3 +217,38 @@ func TestUserSignup(t *testing.T) {
 		})
 	}
 }
+
+func TestUserView(t *testing.T) {
+	app := newTestApplication(t)
+	ts := newTestServer(t, app.routes())
+	defer ts.Close()
+
+	t.Run("Unauthenticated", func(t *testing.T) {
+		code, headers, _ := ts.get(t, "/user/view")
+
+		assert.Equal(t, code, http.StatusSeeOther)
+		assert.Equal(t, headers.Get("Location"), "/user/login")
+	})
+
+	t.Run("Authenticated", func(t *testing.T) {
+		// Log in by posting valid credentials to /user/login. First, get the
+		// login page to extract a valid CSRF token.
+		_, _, body := ts.get(t, "/user/login")
+		csrfToken := extractCSRFToken(t, body)
+
+		form := url.Values{}
+		form.Add("email", "alice@example.com")
+		form.Add("password", "pa$$word")
+		form.Add("csrf_token", csrfToken)
+		ts.postForm(t, "/user/login", form)
+
+		// Now the session has authenticatedUserID set, so the protected
+		// route should be accessible.
+		code, _, body := ts.get(t, "/user/view")
+
+		assert.Equal(t, code, http.StatusOK)
+		assert.StringContains(t, body, "<h2>User Information</h2>")
+		assert.StringContains(t, body, "<td>Alice</td>")
+		assert.StringContains(t, body, "<td>alice@example.com</td>")
+	})
+}

@@ -2,6 +2,7 @@ package models
 
 import (
 	"testing"
+	"time"
 
 	"github.com/sntruong12/josie-rides/internal/assert"
 )
@@ -53,3 +54,58 @@ func TestUserModelExists(t *testing.T) {
 		})
 	}
 }
+
+func TestUserModelGet(t *testing.T) {
+	if testing.Short() {
+		t.Skip("models: skipping integration test")
+	}
+
+	tests := []struct {
+		name      string
+		userID    int
+		wantUser  *User
+		expectedErr error
+	}{
+		{
+			name:   "Valid ID",
+			userID: 1,
+			wantUser: &User{
+				Name:    "Alice Jones",
+				Email:   "alice@example.com",
+				Created: time.Date(2022, 1, 1, 10, 0, 0, 0, time.UTC),
+			},
+			expectedErr: nil,
+		},
+		{
+			name:        "Zero ID",
+			userID:      0,
+			wantUser:    nil,
+			expectedErr: ErrNoRecord,
+		},
+		{
+			name:        "Non-existent ID",
+			userID:      2,
+			wantUser:    nil,
+			expectedErr: ErrNoRecord,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			db := newTestDB(t)
+
+			m := UserModel{db}
+
+			user, err := m.Get(tt.userID)
+
+			assert.Equal(t, err, tt.expectedErr)
+
+			if tt.wantUser != nil {
+				assert.Equal(t, user.Name, tt.wantUser.Name)
+				assert.Equal(t, user.Email, tt.wantUser.Email)
+				assert.Equal(t, user.Created, tt.wantUser.Created)
+			}
+		})
+	}
+}
+
