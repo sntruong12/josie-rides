@@ -19,6 +19,7 @@ import (
 )
 
 type application struct {
+	debug    bool
 	errorLog *log.Logger
 	infoLog  *log.Logger
 
@@ -36,6 +37,7 @@ func main() {
 	addr := flag.String("addr", ":4000", "HTTP network address")
 	// parseTime=true tells the driver to convert the TIME and DATE columns in rides table to Go time.Time values
 	dsn := flag.String("dsn", "web:password@tcp(localhost:3306)/josie_rides?parseTime=true", "MySQL Data Source Name")
+	debug := flag.Bool("debug", false, "Enable debug mode")
 
 	flag.Parse()
 
@@ -66,6 +68,7 @@ func main() {
 	sessionManager.Cookie.Secure = true
 
 	app := &application{
+		debug:          *debug,
 		errorLog:       errorLog,
 		infoLog:        infoLog,
 		rides:          &models.RideModel{DB: db},

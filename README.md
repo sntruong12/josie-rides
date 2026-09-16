@@ -233,6 +233,9 @@ Running the application
 2. optionally you can log into the db with `mysql -D josie_rides -u web -p` - password is `password`
 3. in separate terminal, in root directory of the go project run `go run ./cmd/web`
 
+Debug mode
+1. You can run `go run ./cmd/web -debug` with this debug flag in order to get the stack trace to render on the frontend instead of the generic 500 Internal Server Error page.
+
 ## To-Do
 1. Implement documentation of API routes
 2. Implement ability to confirm email in order to create a post - admin only
