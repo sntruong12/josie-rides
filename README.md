@@ -208,7 +208,7 @@ ALTER USER 'test_web'@'localhost' IDENTIFIED BY 'pass';
 
 ```
 
-## General Notes
+## General Learning Notes
 1. Continuous Integration is testing the integrity of the code when code changes happen. Typically test then build the code if it's tested fine.
 2. Continuous Delivery is releasing the tested code into production. 
 3. HTTPS is essentially HTTP sent across a TLS transport layer security connection, where the data is encrypted and signed to ensure the privacy and integrity during transit.
@@ -247,3 +247,4 @@ Debug mode
 4. implement tls cert/key when deploying to cloud
 5. implement sqlc for the repo layer generation - ddl and dml sql to generate go code
 6. configure session store when deploy to cloud
+7. streamline local dev for running app
