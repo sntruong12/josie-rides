@@ -39,7 +39,7 @@ func (m *UserModel) Create(name, email, password string) error {
 	if err != nil {
 		return err
 	}
-	stmt := `INSERT INTO users (name, email, hashed_password, created)
+	stmt := `INSERT INTO users (name, email, hashed_password, created_at)
 VALUES(?, ?, ?, UTC_TIMESTAMP())`
 	// Use the Exec() method to insert the user details and hashed password
 	// into the users table.
@@ -105,12 +105,12 @@ func (m *UserModel) Exists(id int) (bool, error) {
 	return exists, err
 }
 
-// Get retrieves the name, email, and created fields for a specific user based
+// Get retrieves the name, email, and created_at fields for a specific user based
 // on their user ID. If no matching user is found, it returns ErrNoRecord.
 func (m *UserModel) Get(id int) (*User, error) {
 	var user User
 
-	stmt := `SELECT name, email, created FROM users WHERE id = ?`
+	stmt := `SELECT name, email, created_at FROM users WHERE id = ?`
 
 	err := m.DB.QueryRow(stmt, id).Scan(&user.Name, &user.Email, &user.Created)
 	if err != nil {
