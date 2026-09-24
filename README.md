@@ -193,7 +193,7 @@ CREATE TABLE users (
     name VARCHAR(255) NOT NULL,
     email VARCHAR(255) NOT NULL,
     hashed_password CHAR(60) NOT NULL,
-    created DATETIME NOT NULL
+    created_at DATETIME NOT NULL
 );
 
 ALTER TABLE users ADD CONSTRAINT users_uc_email UNIQUE (email);
@@ -205,8 +205,9 @@ CREATE DATABASE test_josie_rides CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_c
 CREATE USER 'test_web'@'localhost';
 GRANT CREATE, DROP, ALTER, INDEX, SELECT, INSERT, UPDATE, DELETE ON test_josie_rides.* TO 'test_web'@'localhost';
 ALTER USER 'test_web'@'localhost' IDENTIFIED BY 'pass';
-
 ```
+
+5. ride_emojis table 
 
 ## General Learning Notes
 1. Continuous Integration is testing the integrity of the code when code changes happen. Typically test then build the code if it's tested fine.

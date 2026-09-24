@@ -186,10 +186,6 @@ func (app *application) userSignupPost(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// form.Email = strings.TrimSpace(form.Email)
-	// form.Name = strings.TrimSpace(form.Name)
-	// form.Password = strings.TrimSpace(form.Password)
-
 	// Validate the form contents using our helper functions.
 	form.CheckField(validator.NotBlank(form.Name), "name", "This field cannot be blank")
 	form.CheckField(validator.NotBlank(form.Email), "email", "This field cannot be blank")
@@ -330,4 +326,46 @@ func (app *application) userView(w http.ResponseWriter, r *http.Request) {
 	data.User = user
 
 	app.render(w, http.StatusOK, "user.html", data)
+}
+
+type rideEmojiForm struct {
+	Emoji               string `form:"emoji"`
+	RideID              string `form:"ride_id"`
+	validator.Validator `form:"-"`
+}
+
+func (app *application) rideEmojiPost(w http.ResponseWriter, r *http.Request) {
+	userID := app.sessionManager.GetInt(r.Context(), "authenticatedUserID")
+
+	var form rideEmojiForm
+
+	err := app.decodePostForm(r, &form)
+	if err != nil {
+		app.clientError(w, http.StatusBadRequest)
+		return
+	}
+
+	form.CheckField(validator.IsSingleEmoji(form.Emoji), "emoji", "This field must be a single emoji")
+	form.CheckField(validator.MinChars(form.RideID, 1), "ride_id", "This field must not be empty")
+	if !form.Valid() {
+		data := app.newTemplateData(r)
+		data.Form = form
+		app.render(w, http.StatusUnprocessableEntity, fmt.Sprintf("/ride/view/%s", form.RideID), data)
+		return
+	}
+
+	rideID, err := strconv.Atoi(form.RideID)
+	if err != nil {
+		app.clientError(w, http.StatusBadRequest)
+		return
+	}
+
+	err = app.rideEmojis.CreateOrUpdate(rideID, userID, form.Emoji)
+	if err != nil {
+		app.serverError(w, err)
+		return
+	}
+
+	app.sessionManager.Put(r.Context(), "flash", "Your emoji has been added or updated!")
+	http.Redirect(w, r, fmt.Sprintf("/ride/view/%d", rideID), http.StatusSeeOther)
 }

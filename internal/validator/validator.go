@@ -6,6 +6,8 @@ import (
 	"strings"
 	"time"
 	"unicode/utf8"
+
+	"github.com/forPelevin/gomoji"
 )
 
 // Define a new Validator type which contains a map of validation errors for our
@@ -105,4 +107,14 @@ var EmailRegex = regexp.MustCompile(`^[a-zA-Z0-9.!#$%&'*+/=?^_` + "`" + `{|}~-]+
 // expression pattern.
 func Matches(value string, rx *regexp.Regexp) bool {
 	return rx.MatchString(value)
+}
+
+// IsSingleEmoji returns true if the input contains exactly one emoji and nothing else.
+func IsSingleEmoji(s string) bool {
+	s = strings.TrimSpace(s)
+	if s == "" {
+		return false
+	}
+	emojis := gomoji.FindAll(s)
+	return len(emojis) == 1 && emojis[0].Character == s
 }

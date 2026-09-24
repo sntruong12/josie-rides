@@ -12,4 +12,8 @@ require (
 	golang.org/x/crypto v0.57.0
 )
 
-require filippo.io/edwards25519 v1.2.0 // indirect
+require (
+	filippo.io/edwards25519 v1.2.0 // indirect
+	github.com/forPelevin/gomoji v1.4.1 // indirect
+	github.com/rivo/uniseg v0.4.7 // indirect
+)

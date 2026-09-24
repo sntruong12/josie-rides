@@ -23,8 +23,9 @@ type application struct {
 	errorLog *log.Logger
 	infoLog  *log.Logger
 
-	rides models.RideModelInterface
-	users models.UserModelInterface
+	rides      models.RideModelInterface
+	users      models.UserModelInterface
+	rideEmojis models.RideEmojiModelInterface
 
 	templateCache map[string]*template.Template
 
@@ -73,6 +74,7 @@ func main() {
 		infoLog:        infoLog,
 		rides:          &models.RideModel{DB: db},
 		users:          &models.UserModel{DB: db},
+		rideEmojis:     &models.RideEmojiModel{DB: db},
 		templateCache:  templateCache,
 		formDecoder:    formDecoder,
 		sessionManager: sessionManager,
