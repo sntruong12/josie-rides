@@ -251,3 +251,4 @@ Debug mode
 7. streamline local dev for running app
 8. update html for no create posts for users
 9. update html to render comments on rides
+10. fix tests failing
