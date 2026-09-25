@@ -106,7 +106,7 @@ func (m *RideModel) Get(id int) (*Ride, error) {
 }
 
 func (m *RideModel) Latest() ([]*Ride, error) {
-	stmt := `SELECT id, title, description, trail_name, distance_miles, duration, rode_at, created_at, media FROM rides ORDER BY rode_at DESC LIMIT 10`
+	stmt := `SELECT id, title, trail_name, distance_miles, duration, rode_at, created_at FROM rides ORDER BY rode_at DESC LIMIT 10`
 
 	rows, err := m.DB.Query(stmt)
 	if err != nil {
@@ -117,7 +117,7 @@ func (m *RideModel) Latest() ([]*Ride, error) {
 	r := []*Ride{}
 	for rows.Next() {
 		var ride Ride
-		err := rows.Scan(&ride.ID, &ride.Title, &ride.Description, &ride.TrailName, &ride.DistanceMiles, &ride.Duration, &ride.RodeAt, &ride.CreatedAt, &ride.Media)
+		err := rows.Scan(&ride.ID, &ride.Title, &ride.TrailName, &ride.DistanceMiles, &ride.Duration, &ride.RodeAt, &ride.CreatedAt)
 		if err != nil {
 			return nil, err
 		}
