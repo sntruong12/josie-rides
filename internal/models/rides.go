@@ -23,6 +23,7 @@ type Ride struct {
 	RodeAt        time.Time       `json:"rode_at"`
 	CreatedAt     time.Time       `json:"created_at"`
 	Media         json.RawMessage `json:"media"`
+	Emojis        []string        `json:"emojis"`
 }
 
 type RideModel struct {
@@ -59,14 +60,46 @@ func (m *RideModel) Create(title string, description string, trailName string, d
 
 func (m *RideModel) Get(id int) (*Ride, error) {
 	r := &Ride{}
-	stmt := `SELECT id, title, description, trail_name, distance_miles, duration, rode_at, created_at, media FROM rides WHERE id = ?`
+	stmt := `SELECT 
+			r.id, 
+			r.title, 
+			r.description, 
+			r.trail_name, 
+			r.distance_miles, 
+			r.duration, 
+			r.rode_at, 
+			r.created_at, 
+			r.media,
+			re.emoji
+		FROM rides r
+		LEFT JOIN ride_emojis re
+			ON r.id = re.ride_id
+		WHERE r.id = ?`
 
-	err := m.DB.QueryRow(stmt, id).Scan(&r.ID, &r.Title, &r.Description, &r.TrailName, &r.DistanceMiles, &r.Duration, &r.RodeAt, &r.CreatedAt, &r.Media)
+	rows, err := m.DB.Query(stmt, id)
 	if err != nil {
-		if err == sql.ErrNoRows {
-			return nil, ErrNoRecord
-		}
 		return nil, err
+	}
+	defer rows.Close()
+	found := false
+
+	for rows.Next() {
+		found = true
+
+		var emojiVal string
+
+		if err := rows.Scan(&r.ID, &r.Title, &r.Description, &r.TrailName, &r.DistanceMiles, &r.Duration, &r.RodeAt, &r.CreatedAt, &r.Media, &emojiVal); err != nil {
+			return nil, err
+		}
+
+		r.Emojis = append(r.Emojis, emojiVal)
+	}
+
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	if !found {
+		return nil, ErrNoRecord
 	}
 
 	return r, nil
