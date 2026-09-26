@@ -219,6 +219,7 @@ ALTER USER 'test_web'@'localhost' IDENTIFIED BY 'pass';
 7. Unit tests are tests that are run on individual components of the application. Functions, err checks within each function, etc.
 8. End to end testing is a testing methodology where you test the entire application from end to end, including the UI, backend, and database. Typically done to simulate the true user experience.
 9. Integration tests verify that two or more systems that connect to each other are working, e.g. database and application.
+10. Dependency Injection is utilized at initialization of the application. Whether it's a production initialization or a testing initialization, we will inject the proper dependencies into the application. For testing initialization, this is where we will inject mocks. For production initialization, this is where we will inject the actual dependencies.
 
 ## Running locally
 Notes on starting the app locally.
