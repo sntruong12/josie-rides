@@ -1,6 +1,6 @@
 # Josie Rides
 
-This repository follows the book Let's Go by Alex Edwards. It houses golang code to be deployed on AWS. I'm using this as practice for modern cloud development. 
+A blog web application powered by Go.
 
 ## Golang Notes
 
