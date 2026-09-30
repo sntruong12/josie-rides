@@ -203,7 +203,7 @@ ALTER TABLE users ADD CONSTRAINT users_uc_email UNIQUE (email);
 ```
 CREATE DATABASE test_josie_rides CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 CREATE USER 'test_web'@'localhost';
-GRANT CREATE, DROP, ALTER, INDEX, SELECT, INSERT, UPDATE, DELETE ON test_josie_rides.* TO 'test_web'@'localhost';
+GRANT CREATE, DROP, ALTER, INDEX, SELECT, INSERT, UPDATE, DELETE ON, REFERENCES test_josie_rides.* TO 'test_web'@'localhost';
 ALTER USER 'test_web'@'localhost' IDENTIFIED BY 'pass';
 ```
 
@@ -228,7 +228,7 @@ Setup
 1. install homebrew
 2. install mysql using `brew install mysql`
 3. set up the mysql table with info from the Data Models section
-4. you are setting up the database, creating a table in the database, then creating the user
+4. set up the database for app and testing, creating a table in the database, then creating the user,
 5. install go using `brew install go`
 6. pull the repo
 7. go to the repository root folder
@@ -252,4 +252,3 @@ Debug mode
 7. streamline local dev for running app
 8. update html for no create posts for users
 9. update html to render comments on rides
-10. fix tests failing
