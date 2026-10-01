@@ -86,13 +86,13 @@ func (m *RideModel) Get(id int) (*Ride, error) {
 	for rows.Next() {
 		found = true
 
-		var emojiVal string
+		var emojiVal sql.NullString
 
 		if err := rows.Scan(&r.ID, &r.Title, &r.Description, &r.TrailName, &r.DistanceMiles, &r.Duration, &r.RodeAt, &r.CreatedAt, &r.Media, &emojiVal); err != nil {
 			return nil, err
 		}
 
-		r.Emojis = append(r.Emojis, emojiVal)
+		r.Emojis = append(r.Emojis, emojiVal.String)
 	}
 
 	if err := rows.Err(); err != nil {
