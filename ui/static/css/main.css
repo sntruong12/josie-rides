@@ -1,3 +1,13 @@
+:root {
+    --color-rust: #c7522a;
+    --color-sand: #e5c185;
+    --color-cream: #fbf2c4;
+    --color-sage: #74a892;
+    --color-sage-dark: #547C6B;
+    --color-teal: #008585;
+    --color-charcoal: #15140E;
+}
+
 * {
     box-sizing: border-box;
     margin: 0;
@@ -13,8 +23,8 @@ body {
 
 body {
     line-height: 1.5;
-    background-color: #F1F3F6;
-    color: #34495E;
+    background-color: var(--color-cream);
+    color: var(--color-charcoal);
     overflow-y: scroll;
 }
 
@@ -45,7 +55,7 @@ h1 a {
 
 h1 a:hover {
     text-decoration: none;
-    color: #34495E;
+    color: var(--color-charcoal);
 }
 
 h2 {
@@ -56,12 +66,12 @@ h2 {
 }
 
 a {
-    color: #62CB31;
+    color: var(--color-sage);
     text-decoration: none;
 }
 
 a:hover {
-    color: #4EB722;
+    color: var(--color-sage-dark);
     text-decoration: underline;
 }
 
@@ -78,7 +88,7 @@ header {
     background-image: linear-gradient(to right, #34495e, #34495e 25%, #9b59b6 25%, #9b59b6 35%, #3498db 35%, #3498db 45%, #62cb31 45%, #62cb31 55%, #ffb606 55%, #ffb606 65%, #e67e22 65%, #e67e22 75%, #e74c3c 85%, #e74c3c 85%, #c0392b 85%, #c0392b 100%);
     background-size: 100% 6px;
     background-repeat: no-repeat;
-    border-bottom: 1px solid #E4E5E7;
+    border-bottom: 1px solid var(--color-teal);
     overflow: auto;
     padding-top: 33px;
     padding-bottom: 27px;
@@ -86,17 +96,17 @@ header {
 }
 
 header a {
-    color: #34495E;
+    color: var(--color-charcoal);
     text-decoration: none;
 }
 
 nav {
-    border-bottom: 1px solid #E4E5E7;
+    border-bottom: 1px solid var(--color-teal);
     padding-top: 17px;
     padding-bottom: 15px;
-    background: #F7F9FA;
+    background: var(--color-sand);
     height: 60px;
-    color: #6A6C6F;
+    color: var(--color-charcoal);
 }
 
 nav a {
@@ -124,7 +134,7 @@ nav div:last-child a {
 }
 
 nav a.live {
-    color: #34495E;
+    color: var(--color-charcoal);
     cursor: default;
 }
 
@@ -140,16 +150,16 @@ nav a.live:after {
     top: 9px;
     width: 14px;
     height: 14px;
-    background: #F7F9FA;
-    border-left: 1px solid #E4E5E7;
-    border-bottom: 1px solid #E4E5E7;
+    background: var(--color-sand);
+    border-left: 1px solid var(--color-teal);
+    border-bottom: 1px solid var(--color-teal);
     -moz-transform: rotate(45deg);
     -webkit-transform: rotate(-45deg);
 }
 
 a.button,
 input[type="submit"] {
-    background-color: #62CB31;
+    background-color: var(--color-sage);
     border-radius: 3px;
     color: #FFFFFF;
     padding: 18px 27px;
@@ -161,7 +171,7 @@ input[type="submit"] {
 
 a.button:hover,
 input[type="submit"]:hover {
-    background-color: #4EB722;
+    background-color: var(--color-sage-dark);
     color: #FFFFFF;
     cursor: pointer;
     text-decoration: none;
@@ -172,7 +182,7 @@ form div {
 }
 
 form div:last-child {
-    border-top: 1px dashed #E4E5E7;
+    border-top: 1px dashed var(--color-teal);
 }
 
 form input[type="radio"] {
@@ -190,9 +200,9 @@ form input[type=text],
 form input[type="password"],
 form input[type="email"],
 textarea {
-    color: #6A6C6F;
+    color: var(--color-charcoal);
     background: #FFFFFF;
-    border: 1px solid #E4E5E7;
+    border: 1px solid var(--color-teal);
     border-radius: 3px;
 }
 
@@ -223,31 +233,31 @@ button {
     background: none;
     padding: 0;
     border: none;
-    color: #62CB31;
+    color: var(--color-sage);
     text-decoration: none;
 }
 
 button:hover {
-    color: #4EB722;
+    color: var(--color-sage-dark);
     text-decoration: underline;
     cursor: pointer;
 }
 
 .ride {
     background-color: #FFFFFF;
-    border: 1px solid #E4E5E7;
+    border: 1px solid var(--color-teal);
     border-radius: 3px;
 }
 
 .ride pre {
     padding: 18px;
-    border-top: 1px solid #E4E5E7;
-    border-bottom: 1px solid #E4E5E7;
+    border-top: 1px solid var(--color-teal);
+    border-bottom: 1px solid var(--color-teal);
 }
 
 .ride .metadata {
     background-color: #F7F9FA;
-    color: #6A6C6F;
+    color: var(--color-charcoal);
     padding: 0.75em 18px;
     overflow: auto;
 }
@@ -257,7 +267,7 @@ button:hover {
 }
 
 .ride .metadata strong {
-    color: #34495E;
+    color: var(--color-charcoal);
 }
 
 .ride .metadata time {
@@ -275,7 +285,7 @@ button:hover {
 div.flash {
     color: #FFFFFF;
     font-weight: bold;
-    background-color: #34495E;
+    background-color: var(--color-charcoal);
     padding: 18px;
     margin-bottom: 36px;
     text-align: center;
@@ -292,7 +302,7 @@ div.error {
 
 table {
     background: white;
-    border: 1px solid #E4E5E7;
+    border: 1px solid var(--color-teal);
     border-collapse: collapse;
     width: 100%;
 }
@@ -306,11 +316,11 @@ th {
 th:last-child,
 td:last-child {
     text-align: right;
-    color: #6A6C6F;
+    color: var(--color-charcoal);
 }
 
 tr {
-    border-bottom: 1px solid #E4E5E7;
+    border-bottom: 1px solid var(--color-teal);
 }
 
 tr:nth-child(2n) {
@@ -318,12 +328,12 @@ tr:nth-child(2n) {
 }
 
 footer {
-    border-top: 1px solid #E4E5E7;
+    border-top: 1px solid var(--color-teal);
     padding-top: 17px;
     padding-bottom: 15px;
-    background: #F7F9FA;
+    background: var(--color-sand);
     height: 60px;
-    color: #6A6C6F;
+    color: var(--color-charcoal);
     text-align: center;
 }
 
