@@ -1,0 +1,29 @@
+{{define "emoji-box"}}
+<div class="emoji-box">
+    <div class="emoji-box-header">
+        <h3>The World Wide Web Reactions</h3>
+    </div>
+
+    <div class="emoji-stage" id="emoji-stage" aria-label="Emoji reactions screensaver">
+        <!-- Dummy hardcoded emojis for development and testing -->
+        <span class="dvd-emoji" role="img" aria-label="Bicycle">🚴</span>
+        <span class="dvd-emoji" role="img" aria-label="Fire">🔥</span>
+        <span class="dvd-emoji" role="img" aria-label="Jellyfish">🪼</span>
+        <span class="dvd-emoji" role="img" aria-label="Evergreen Tree">🌲</span>
+        <span class="dvd-emoji" role="img" aria-label="Dashing Away">💨</span>
+        <span class="dvd-emoji" role="img" aria-label="Freezing Face">🥶</span>
+    </div>
+
+    <div class="emoji-box-footer">
+        {{if .IsAuthenticated}}
+        <div class="emoji-status">
+            <p>Be the first to react!</p>
+        </div>
+        {{else}}
+        <div class="emoji-status">
+            <p><a href="/user/login">Log in</a> to be the first to react!</p>
+        </div>
+        {{end}}
+    </div>
+</div>
+{{end}}

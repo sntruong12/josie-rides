@@ -6,6 +6,8 @@
     --color-sage-dark: #547C6B;
     --color-teal: #008585;
     --color-charcoal: #15140E;
+
+    --border-radius: 50px;
 }
 
 * {
@@ -246,7 +248,7 @@ button:hover {
 .ride {
     background-color: #FFFFFF;
     border: 1px solid var(--color-teal);
-    border-radius: 3px;
+    border-radius: var(--border-radius);
 }
 
 .ride pre {
@@ -256,7 +258,6 @@ button:hover {
 }
 
 .ride .metadata {
-    background-color: #F7F9FA;
     color: var(--color-charcoal);
     padding: 0.75em 18px;
     overflow: auto;

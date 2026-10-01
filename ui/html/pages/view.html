@@ -1,20 +1,23 @@
 {{define "title"}}View Ride #{{.Ride.ID}}{{end}}
 
 {{define "main"}}
-{{with .Ride}}
-<div class="ride">
-    <div class="metadata">
-        <strong>{{.Title}}</strong>
-        <p>Trail Name: {{.TrailName}}</p>
-        <p>Description: {{.Description}}</p>
-        <p>Distance (Miles): {{.DistanceMiles}}</p>
-        <p>Duration: {{.Duration}} seconds</p>
+<div class="ride-view-layout">
+    {{with .Ride}}
+    <div class="ride">
+        <div class="metadata">
+            <strong>{{.Title}}</strong>
+            <p>Trail Name: {{.TrailName}}</p>
+            <p>Description: {{.Description}}</p>
+            <p>Distance (Miles): {{.DistanceMiles}}</p>
+            <p>Duration: {{.Duration}} seconds</p>
+        </div>
+        <pre><code>{{.Media}}</code></pre>
+        <div class="metadata">
+            <time>Created: {{humanDate .CreatedAt}}</time>
+            <time>RodeAt: {{humanDate .RodeAt}}</time>
+        </div>
     </div>
-    <pre><code>{{.Media}}</code></pre>
-    <div class="metadata">
-        <time>Created: {{humanDate .CreatedAt}}</time>
-        <time>RodeAt: {{humanDate .RodeAt}}</time>
-    </div>
+    {{end}}
+    {{template "emoji-box" .}}
 </div>
-{{end}}
 {{end}}

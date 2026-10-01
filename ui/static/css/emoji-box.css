@@ -1,0 +1,193 @@
+/* Emoji Box DVD Screensaver Styles */
+
+.ride-view-layout {
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+}
+
+/* Tablet & Mobile: Sits at the bottom */
+@media (max-width: 991px) {
+    .ride-view-layout {
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+    }
+
+    .emoji-box {
+        max-width: 380px;
+        margin: 0 auto;
+        width: 100%;
+    }
+}
+
+/* Desktop: Offset to the right side */
+@media (min-width: 992px) {
+    main:has(.ride-view-layout) {
+        padding-left: calc((100% - 1080px) / 2);
+        padding-right: calc((100% - 1080px) / 2);
+    }
+
+    .ride-view-layout {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 340px;
+        align-items: start;
+        gap: 32px;
+    }
+
+    .emoji-box {
+        position: sticky;
+        top: 24px;
+        width: 100%;
+    }
+}
+
+/* Outer Card Container */
+.emoji-box {
+    background-color: #FFFFFF;
+    border: 1px solid var(--color-teal);
+    border-radius: var(--border-radius);
+    box-shadow: 0 4px 12px rgba(21, 20, 14, 0.06);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Box Header */
+.emoji-box-header {
+    background-color: #F7F9FA;
+    border-bottom: 1px solid var(--color-teal);
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.emoji-box-header h3 {
+    font-size: 16px;
+    font-weight: bold;
+    color: var(--color-charcoal);
+    margin: 0;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
+
+/* Perfect Square Stage for Screensaver */
+.emoji-stage {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    background: radial-gradient(circle at center, #24221a 0%, #15140e 100%);
+    overflow: hidden;
+    box-shadow: inset 0 0 24px rgba(0, 0, 0, 0.7);
+    border-bottom: 1px solid var(--color-teal);
+}
+
+/* Stage subtle scanline / retro CRT effect */
+.emoji-stage::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: repeating-linear-gradient(0deg,
+            rgba(0, 0, 0, 0.12),
+            rgba(0, 0, 0, 0.12) 1px,
+            transparent 1px,
+            transparent 2px);
+    pointer-events: none;
+    z-index: 5;
+}
+
+/* Individual Bouncing Emojis */
+.dvd-emoji {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 44px;
+    height: 44px;
+    font-size: 30px;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    user-select: none;
+    pointer-events: none;
+    will-change: transform;
+    z-index: 2;
+    filter: drop-shadow(0 0 6px rgba(229, 193, 133, 0.45));
+    transition: filter 0.15s ease, scale 0.12s ease;
+    scale: 1;
+}
+
+/* Wall bounce glow animations */
+.dvd-emoji.bounce-glow-0 {
+    filter: drop-shadow(0 0 10px #008585) drop-shadow(0 0 18px #008585);
+}
+
+.dvd-emoji.bounce-glow-1 {
+    filter: drop-shadow(0 0 10px #c7522a) drop-shadow(0 0 18px #c7522a);
+}
+
+.dvd-emoji.bounce-glow-2 {
+    filter: drop-shadow(0 0 10px #e5c185) drop-shadow(0 0 18px #e5c185);
+}
+
+.dvd-emoji.bounce-glow-3 {
+    filter: drop-shadow(0 0 10px #74a892) drop-shadow(0 0 18px #74a892);
+}
+
+/* Empty State / Prompt Footer */
+.emoji-box-footer {
+    background-color: #F7F9FA;
+    padding: 12px 16px;
+    text-align: center;
+}
+
+.emoji-status {
+    font-size: 15px;
+    color: var(--color-charcoal);
+}
+
+.emoji-status p {
+    font-size: 15px;
+    margin: 0;
+}
+
+.emoji-status a {
+    color: var(--color-rust);
+    font-weight: bold;
+    text-decoration: underline;
+}
+
+.emoji-status a:hover {
+    color: var(--color-teal);
+}
+
+/* In-stage Empty Overlay (when 0 emojis exist) */
+.stage-empty-overlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    color: var(--color-sand);
+    z-index: 3;
+    padding: 16px;
+    width: 80%;
+}
+
+.stage-empty-overlay .empty-icon {
+    font-size: 36px;
+    display: block;
+    margin-bottom: 8px;
+    opacity: 0.7;
+}
+
+.stage-empty-overlay p {
+    font-size: 14px;
+    color: var(--color-cream);
+    margin: 0;
+    line-height: 1.4;
+}
