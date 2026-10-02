@@ -159,7 +159,7 @@ func (app *application) rideCreatePost(w http.ResponseWriter, r *http.Request) {
 
 	// Use the Put() method to add a string value ("Ride successfully
 	// created!") and the corresponding key ("flash") to the session data.
-	app.sessionManager.Put(r.Context(), "flash", "Ride successfully created!")
+	app.sessionManager.Put(r.Context(), sessionKeyFlash, "Ride successfully created!")
 
 	http.Redirect(w, r, fmt.Sprintf("/ride/view/%d", id), http.StatusSeeOther)
 }
@@ -216,7 +216,7 @@ func (app *application) userSignupPost(w http.ResponseWriter, r *http.Request) {
 	}
 	// Otherwise add a confirmation flash message to the session confirming that
 	// their signup worked.
-	app.sessionManager.Put(r.Context(), "flash", "Your signup was successful. Please log in.")
+	app.sessionManager.Put(r.Context(), sessionKeyFlash, "Your signup was successful. Please log in.")
 	// And redirect the user to the login page.
 	http.Redirect(w, r, "/user/login", http.StatusSeeOther)
 }
@@ -279,7 +279,17 @@ func (app *application) userLoginPost(w http.ResponseWriter, r *http.Request) {
 	}
 	// Add the ID of the current user to the session, so that they are now
 	// 'logged in'.
-	app.sessionManager.Put(r.Context(), "authenticatedUserID", id)
+	app.sessionManager.Put(r.Context(), sessionKeyAuthenticatedUserID, id)
+
+	// Use the PopString method to retrieve and remove a value from the session
+	// data in one step. If no matching key exists this will return the empty
+	// string.
+	redirectPath := app.sessionManager.PopString(r.Context(), sessionKeyRedirectPathAfterLogin)
+	if redirectPath != "" {
+		http.Redirect(w, r, redirectPath, http.StatusSeeOther)
+		return
+	}
+
 	// Redirect the user to the create ride page.
 	http.Redirect(w, r, "/ride/create", http.StatusSeeOther)
 }
@@ -295,11 +305,11 @@ func (app *application) userLogoutPost(w http.ResponseWriter, r *http.Request) {
 
 	// Remove the authenticatedUserID from the session data so that the user is
 	// 'logged out'.
-	app.sessionManager.Remove(r.Context(), "authenticatedUserID")
+	app.sessionManager.Remove(r.Context(), sessionKeyAuthenticatedUserID)
 
 	// Add a flash message to the session to confirm to the user that they've been
 	// logged out.
-	app.sessionManager.Put(r.Context(), "flash", "You've been logged out successfully!")
+	app.sessionManager.Put(r.Context(), sessionKeyFlash, "You've been logged out successfully!")
 
 	// Redirect the user to the application home page.
 	http.Redirect(w, r, "/", http.StatusSeeOther)
@@ -310,7 +320,7 @@ func ping(w http.ResponseWriter, r *http.Request) {
 }
 
 func (app *application) userView(w http.ResponseWriter, r *http.Request) {
-	userID := app.sessionManager.GetInt(r.Context(), "authenticatedUserID")
+	userID := app.sessionManager.GetInt(r.Context(), sessionKeyAuthenticatedUserID)
 
 	user, err := app.users.Get(userID)
 	if err != nil {
@@ -335,7 +345,7 @@ type rideEmojiForm struct {
 }
 
 func (app *application) rideEmojiPost(w http.ResponseWriter, r *http.Request) {
-	userID := app.sessionManager.GetInt(r.Context(), "authenticatedUserID")
+	userID := app.sessionManager.GetInt(r.Context(), sessionKeyAuthenticatedUserID)
 
 	var form rideEmojiForm
 
@@ -366,6 +376,6 @@ func (app *application) rideEmojiPost(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	app.sessionManager.Put(r.Context(), "flash", "Your emoji has been added or updated!")
+	app.sessionManager.Put(r.Context(), sessionKeyFlash, "Your emoji has been added or updated!")
 	http.Redirect(w, r, fmt.Sprintf("/ride/view/%d", rideID), http.StatusSeeOther)
 }

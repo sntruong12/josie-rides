@@ -71,6 +71,10 @@ func (app *application) requireAuthentication(next http.Handler) http.Handler {
 		// return from the middleware chain so that no subsequent handlers in
 		// the chain are executed.
 		if !app.isAuthenticated(r) {
+			// Add the path that the user is trying to access to their session
+			// data.
+			app.sessionManager.Put(r.Context(), sessionKeyRedirectPathAfterLogin, r.URL.Path)
+
 			http.Redirect(w, r, "/user/login", http.StatusSeeOther)
 			return
 		}
@@ -101,7 +105,7 @@ func (app *application) authenticate(next http.Handler) http.Handler {
 		// GetInt() method. This will return the zero value for an int (0) if no
 		// "authenticatedUserID" value is in the session -- in which case we
 		// call the next handler in the chain as normal and return.
-		id := app.sessionManager.GetInt(r.Context(), "authenticatedUserID")
+		id := app.sessionManager.GetInt(r.Context(), sessionKeyAuthenticatedUserID)
 		if id == 0 {
 			next.ServeHTTP(w, r)
 			return
