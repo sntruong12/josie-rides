@@ -251,3 +251,4 @@ Debug mode
 6. configure session store when deploy to cloud
 7. streamline local dev for running app
 8. update html for no create posts for users
+9. add yen's stop motion idea for the emoji box
