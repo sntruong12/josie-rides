@@ -72,6 +72,9 @@ Some tradeoffs here
 1. Blast Radius, if multiple services share the internal code, a bug in internal could affect multiple services like the web server and a cloud function all at once.
 2. Slower CI/CD pipelines, new updates to code would have to be handled specifically. CI flows would have to figure what changed and which services need to be built. Tests and builds can take longer, thus impacting speed of delivery.
 
+UI directory
+1. Prefixing html files with underscore (e.g., _create.html) will exclude it from being embedded into the web binary.
+
 ## Data Models
 1. table name, rides
 id
