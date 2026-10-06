@@ -250,5 +250,4 @@ Debug mode
 5. implement sqlc for the repo layer generation - ddl and dml sql to generate go code
 6. configure session store when deploy to cloud
 7. streamline local dev for running app
-8. update html for no create posts for users
 9. add yen's stop motion idea for the emoji box
