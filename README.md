@@ -1,6 +1,19 @@
 # Josie Rides
 
-A blog web application powered by Go.
+A blog web application powered by Go. 
+
+Technology Stack:
+- Go
+- HTML
+- CSS
+- Javascript
+- MySQL
+- Sessions to persist state across requests for the same user
+- User Authentication
+- Generating TLS certificates to enable HTTPS connections
+- Routing/Middleware
+- Validating user inputs
+- Unit/Integration/End To End testing
 
 ## Golang Notes
 
