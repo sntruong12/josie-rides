@@ -80,6 +80,9 @@ func TestRideView(t *testing.T) {
 }
 
 func TestRideCreateView(t *testing.T) {
+	// skip for now
+	t.Skip("Create Ride is no longer supported")
+
 	app := newTestApplication(t)
 	ts := newTestServer(t, app.routes())
 	defer ts.Close()

@@ -290,8 +290,8 @@ func (app *application) userLoginPost(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Redirect the user to the create ride page.
-	http.Redirect(w, r, "/ride/create", http.StatusSeeOther)
+	// Redirect the user to the home page.
+	http.Redirect(w, r, "/", http.StatusSeeOther)
 }
 
 func (app *application) userLogoutPost(w http.ResponseWriter, r *http.Request) {

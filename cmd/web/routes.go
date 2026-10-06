@@ -39,8 +39,8 @@ func (app *application) routes() http.Handler {
 	// Protected (authenticated-only) application routes, using a new "protected"
 	// middleware chain which includes the requireAuthentication middleware.
 	protected := dynamic.Append(app.requireAuthentication)
-	mux.Handle("GET /ride/create", protected.ThenFunc(app.rideCreate))
-	mux.Handle("POST /ride/create", protected.ThenFunc(app.rideCreatePost))
+	// mux.Handle("GET /ride/create", protected.ThenFunc(app.rideCreate))
+	// mux.Handle("POST /ride/create", protected.ThenFunc(app.rideCreatePost))
 	mux.Handle("POST /ride/emoji", protected.ThenFunc(app.rideEmojiPost))
 	mux.Handle("POST /user/logout", protected.ThenFunc(app.userLogoutPost))
 	mux.Handle("GET /user/view", protected.ThenFunc(app.userView))
