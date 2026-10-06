@@ -379,3 +379,58 @@ func (app *application) rideEmojiPost(w http.ResponseWriter, r *http.Request) {
 	app.sessionManager.Put(r.Context(), sessionKeyFlash, "Your emoji has been added or updated!")
 	http.Redirect(w, r, fmt.Sprintf("/ride/view/%d", rideID), http.StatusSeeOther)
 }
+
+type userPasswordResetForm struct {
+	CurrentPassword         string `form:"current_password"`
+	NewPassword             string `form:"new_password"`
+	NewPasswordConfirmation string `form:"new_password_confirmation"`
+	validator.Validator     `form:"-"`
+}
+
+func (app *application) userPasswordReset(w http.ResponseWriter, r *http.Request) {
+	data := app.newTemplateData(r)
+	data.Form = userPasswordResetForm{}
+
+	app.render(w, http.StatusOK, "password.html", data)
+}
+
+func (app *application) userPasswordResetPost(w http.ResponseWriter, r *http.Request) {
+	var form userPasswordResetForm
+
+	err := app.decodePostForm(r, &form)
+	if err != nil {
+		app.clientError(w, http.StatusBadRequest)
+		return
+	}
+
+	form.CheckField(validator.NotBlank(form.CurrentPassword), "current_password", "This field cannot be blank")
+	form.CheckField(validator.NotBlank(form.NewPassword), "new_password", "This field cannot be blank")
+	form.CheckField(validator.MinChars(form.NewPassword, 8), "new_password", "This field must be at least 8 characters long")
+	form.CheckField(validator.NotBlank(form.NewPasswordConfirmation), "new_password_confirmation", "This field cannot be blank")
+	form.CheckField(form.NewPassword == form.NewPasswordConfirmation, "new_password_confirmation", "Passwords do not match")
+
+	if !form.Valid() {
+		data := app.newTemplateData(r)
+		data.Form = form
+
+		app.render(w, http.StatusUnprocessableEntity, "password.html", data)
+		return
+	}
+
+	userID := app.sessionManager.GetInt(r.Context(), sessionKeyAuthenticatedUserID)
+	err = app.users.ResetPassword(userID, form.CurrentPassword, form.NewPassword)
+	if err != nil {
+		if errors.Is(err, models.ErrInvalidCredentials) {
+			form.AddFieldError("current_password", "Current password is incorrect")
+			data := app.newTemplateData(r)
+			data.Form = form
+			app.render(w, http.StatusUnprocessableEntity, "password.html", data)
+		} else if err != nil {
+			app.serverError(w, err)
+		}
+		return
+	}
+
+	app.sessionManager.Put(r.Context(), sessionKeyFlash, "Your password has been updated!")
+	http.Redirect(w, r, "/user/view", http.StatusSeeOther)
+}

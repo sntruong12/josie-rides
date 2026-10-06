@@ -44,6 +44,8 @@ func (app *application) routes() http.Handler {
 	mux.Handle("POST /ride/emoji", protected.ThenFunc(app.rideEmojiPost))
 	mux.Handle("POST /user/logout", protected.ThenFunc(app.userLogoutPost))
 	mux.Handle("GET /user/view", protected.ThenFunc(app.userView))
+	mux.Handle("GET /user/password/reset", protected.ThenFunc(app.userPasswordReset))
+	mux.Handle("POST /user/password/reset", protected.ThenFunc(app.userPasswordResetPost))
 
 	// Create a middleware chain containing our 'standard' middleware
 	// which will be used for every request our application receives.
