@@ -425,7 +425,7 @@ func (app *application) userPasswordResetPost(w http.ResponseWriter, r *http.Req
 			data := app.newTemplateData(r)
 			data.Form = form
 			app.render(w, http.StatusUnprocessableEntity, "password.html", data)
-		} else if err != nil {
+		} else {
 			app.serverError(w, err)
 		}
 		return
