@@ -252,5 +252,4 @@ Debug mode
 7. streamline local dev for running app
 8. update html for no create posts for users
 9. add yen's stop motion idea for the emoji box
-10. test redirect feature
 11. change password feature
