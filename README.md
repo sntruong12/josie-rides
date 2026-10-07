@@ -267,3 +267,4 @@ Debug mode
 6. configure session store when deploy to cloud
 7. streamline local dev for running app
 9. add yen's stop motion idea for the emoji box
+- finish implementation of user adding emoji to ride
