@@ -24,14 +24,6 @@ document.addEventListener("DOMContentLoaded", () => {
     let animationFrameId = null;
     let isRunning = false;
 
-    // Glow classes defined in emoji-box.css
-    const glowClasses = [
-        "bounce-glow-0",
-        "bounce-glow-1",
-        "bounce-glow-2",
-        "bounce-glow-3"
-    ];
-
     // Helper: random float in [min, max]
     function randomRange(min, max) {
         return Math.random() * (max - min) + min;
@@ -65,19 +57,10 @@ document.addEventListener("DOMContentLoaded", () => {
             vy,
             width,
             height,
-            glowIndex: index % glowClasses.length
         };
     });
 
     function triggerBounce(item) {
-        // Remove previous glow class
-        glowClasses.forEach(cls => item.el.classList.remove(cls));
-
-        // Advance to next glow color and apply
-        item.glowIndex = (item.glowIndex + 1) % glowClasses.length;
-        const newClass = glowClasses[item.glowIndex];
-        item.el.classList.add(newClass);
-
         // Subtle squash/pop on bounce
         item.el.style.transform = `translate3d(${item.x}px, ${item.y}px, 0) scale(1.15)`;
         setTimeout(() => {
@@ -185,3 +168,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 });
+
+// Add event listener for emoji-picker
+document.querySelector('emoji-picker')
+    .addEventListener('emoji-click', event => console.log(event.detail));

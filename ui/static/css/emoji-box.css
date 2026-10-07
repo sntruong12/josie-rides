@@ -121,23 +121,6 @@
     scale: 1;
 }
 
-/* Wall bounce glow animations */
-.dvd-emoji.bounce-glow-0 {
-    filter: drop-shadow(0 0 10px #008585) drop-shadow(0 0 18px #008585);
-}
-
-.dvd-emoji.bounce-glow-1 {
-    filter: drop-shadow(0 0 10px #c7522a) drop-shadow(0 0 18px #c7522a);
-}
-
-.dvd-emoji.bounce-glow-2 {
-    filter: drop-shadow(0 0 10px #e5c185) drop-shadow(0 0 18px #e5c185);
-}
-
-.dvd-emoji.bounce-glow-3 {
-    filter: drop-shadow(0 0 10px #74a892) drop-shadow(0 0 18px #74a892);
-}
-
 /* Empty State / Prompt Footer */
 .emoji-box-footer {
     background-color: #F7F9FA;
@@ -190,4 +173,9 @@
     color: var(--color-cream);
     margin: 0;
     line-height: 1.4;
+}
+
+.emoji-picker-icon {
+    max-height: 30px;
+    max-width: 30px;
 }
