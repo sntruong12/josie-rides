@@ -237,6 +237,9 @@ ALTER USER 'test_web'@'localhost' IDENTIFIED BY 'pass';
 9. Integration tests verify that two or more systems that connect to each other are working, e.g. database and application.
 10. Dependency Injection is utilized at initialization of the application. Whether it's a production initialization or a testing initialization, we will inject the proper dependencies into the application. For testing initialization, this is where we will inject mocks. For production initialization, this is where we will inject the actual dependencies.
 
+## CI/CD Pipeline
+
+
 ## Running locally
 Notes on starting the app locally.
 
