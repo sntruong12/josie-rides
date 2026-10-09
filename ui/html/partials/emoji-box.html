@@ -17,19 +17,19 @@
     <div class="emoji-box-footer">
         {{if .IsAuthenticated}}
         <div class="emoji-status">
-            <form action="/ride/emoji" method="POST" required>
+            <img id="emoji-picker-icon" class="emoji-picker-icon" src="/static/img/chow-chow-face-icon.png"
+                alt="An outline of a chow chow's face" role="button" tabindex="0" aria-label="Open emoji picker"
+                aria-expanded="false">
+            <emoji-picker class="hidden"></emoji-picker>
+            <!-- <form action="/ride/emoji" method="POST" required>
                 <label for="create_or_update_ride_emoji">
-                    <emoji-picker>
-                        <img class="emoji-picker-icon" src="/static/img/chow-chow-face-icon.png"
-                            alt="An outline of a chow chow's face">
-                    </emoji-picker>
                 </label>
                 {{with .Form.FieldErrors.emoji}}
                 <label class="error">{{.}}</label>
                 {{end}}
                 <input type="text" id="create_or_update_ride_emoji" name="emoji" required value="{{.Form.Emoji}}">
             </form>
-            <input type="submit" value="Add Emoji">
+            <input type="submit" value="Add Emoji"> -->
         </div>
         {{else}}
         <div class="emoji-status">

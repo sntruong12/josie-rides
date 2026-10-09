@@ -169,6 +169,61 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 });
 
-// Add event listener for emoji-picker
-document.querySelector('emoji-picker')
-    .addEventListener('emoji-click', event => console.log(event.detail));
+// Emoji picker keyboard toggle and event listeners
+document.addEventListener("DOMContentLoaded", () => {
+    const emojiPickerBtn = document.getElementById("emoji-picker-icon");
+    if (!emojiPickerBtn) {
+        return;
+    }
+
+    let emojiKeyboard = document.querySelector("emoji-picker");
+    if (!emojiKeyboard) {
+        emojiKeyboard = document.createElement("emoji-picker");
+        emojiKeyboard.classList.add("hidden");
+        emojiPickerBtn.insertAdjacentElement("afterend", emojiKeyboard);
+    }
+
+    emojiPickerBtn.addEventListener("click", (event) => {
+        event.stopPropagation();
+        const isHidden = emojiKeyboard.classList.toggle("hidden");
+        emojiPickerBtn.setAttribute("aria-expanded", String(!isHidden));
+    });
+
+    emojiPickerBtn.addEventListener("keydown", (event) => {
+        if (event.key === "Enter" || event.key === " ") {
+            event.preventDefault();
+            emojiPickerBtn.click();
+        }
+    });
+
+    emojiKeyboard.addEventListener("emoji-click", (event) => {
+        console.log(event.detail);
+    });
+
+    // Prevent clicks inside the emoji keyboard from closing it
+    emojiKeyboard.addEventListener("click", (event) => {
+        event.stopPropagation();
+    });
+
+    // Close when clicking outside
+    document.addEventListener("click", (event) => {
+        if (!emojiPickerBtn.contains(event.target) && !emojiKeyboard.contains(event.target)) {
+            if (!emojiKeyboard.classList.contains("hidden")) {
+                emojiKeyboard.classList.add("hidden");
+                emojiPickerBtn.setAttribute("aria-expanded", "false");
+            }
+        }
+    });
+
+    // Close on Escape key
+    document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape" && !emojiKeyboard.classList.contains("hidden")) {
+            emojiKeyboard.classList.add("hidden");
+            emojiPickerBtn.setAttribute("aria-expanded", "false");
+            emojiPickerBtn.focus();
+        }
+    });
+});
+
+
+
