@@ -60,6 +60,7 @@ func (app *application) rideView(w http.ResponseWriter, r *http.Request) {
 
 	data := app.newTemplateData(r)
 	data.Ride = ride
+	data.CurrentRideEmojis = ride.Emojis
 	data.Form = rideEmojiForm{}
 
 	app.render(w, http.StatusOK, "view.html", data)

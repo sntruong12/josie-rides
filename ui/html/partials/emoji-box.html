@@ -5,13 +5,14 @@
     </div>
 
     <div class="emoji-stage" id="emoji-stage" aria-label="Emoji reactions screensaver">
-        <!-- Dummy hardcoded emojis for development and testing -->
-        <span class="dvd-emoji" role="img" aria-label="Bicycle">🚴</span>
-        <span class="dvd-emoji" role="img" aria-label="Fire">🔥</span>
-        <span class="dvd-emoji" role="img" aria-label="Jellyfish">🪼</span>
-        <span class="dvd-emoji" role="img" aria-label="Evergreen Tree">🌲</span>
-        <span class="dvd-emoji" role="img" aria-label="Dashing Away">💨</span>
-        <span class="dvd-emoji" role="img" aria-label="Freezing Face">🥶</span>
+        {{ if .CurrentRideEmojis }}
+        {{ range .CurrentRideEmojis }}
+        <span class="dvd-emoji" role="img" aria-label="{{.}}">{{.}}</span>
+        {{end}}
+        {{else}}
+        <div class="stage-empty-overlay">
+        </div>
+        {{end}}
     </div>
 
     <div class="emoji-box-footer">
@@ -20,16 +21,18 @@
             <img id="emoji-picker-icon" class="emoji-picker-icon" src="/static/img/chow-chow-face-icon.png"
                 alt="An outline of a chow chow's face" role="button" tabindex="0" aria-label="Open emoji picker"
                 aria-expanded="false">
-            <emoji-picker class="hidden"></emoji-picker>
-            <!-- <form action="/ride/emoji" method="POST" required>
-                <label for="create_or_update_ride_emoji">
-                </label>
-                {{with .Form.FieldErrors.emoji}}
-                <label class="error">{{.}}</label>
-                {{end}}
-                <input type="text" id="create_or_update_ride_emoji" name="emoji" required value="{{.Form.Emoji}}">
+            <div id="curated-emoji-picker" class="curated-emoji-picker hidden" role="dialog"
+                aria-label="Emoji reactions">
+            </div>
+            <form id="emoji-reaction-form" action="/ride/emoji" method="POST" class="hidden">
+                <!-- Include the CSRF token -->
+                <input type="hidden" name="csrf_token" value="{{.CSRFToken}}">
+                <input type="hidden" name="ride_id" value="{{.Ride.ID}}">
+                <input type="hidden" name="emoji" id="selected-emoji-input" value="">
             </form>
-            <input type="submit" value="Add Emoji"> -->
+            {{with .Form.FieldErrors.emoji}}
+            <p class="error">{{.}}</p>
+            {{end}}
         </div>
         {{else}}
         <div class="emoji-status">

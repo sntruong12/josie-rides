@@ -27,7 +27,7 @@ func (m *RideEmojiModel) CreateOrUpdate(rideID, userID int, emoji string) error 
 	stmt := `INSERT INTO ride_emojis (ride_id, user_id, emoji, created_at)
 		VALUES(?, ?, ?, UTC_TIMESTAMP()) as new_emoji
 		ON DUPLICATE KEY UPDATE
-			emoji = VALUES(new_emoji.emoji);`
+			emoji = new_emoji.emoji;`
 	_, err := m.DB.Exec(stmt, rideID, userID, emoji)
 	if err != nil {
 		return err

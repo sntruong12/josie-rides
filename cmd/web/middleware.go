@@ -26,10 +26,8 @@ func neuter(next http.Handler) http.Handler {
 func secureHeaders(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		// code here is executed before being passed to the next handler
-		// w.Header().Set("Content-Security-Policy",
-		// "default-src 'self'; style-src 'self' fonts.googleapis.com; font-src fonts.gstatic.com;")
 		w.Header().Set("Content-Security-Policy",
-			"default-src 'self'; script-src 'self' https://cdn.jsdelivr.net; style-src 'self' fonts.googleapis.com; font-src fonts.gstatic.com; connect-src 'self' https://cdn.jsdelivr.net")
+			"default-src 'self'; style-src 'self' fonts.googleapis.com; font-src fonts.gstatic.com")
 		w.Header().Set("Referrer-Policy", "origin-when-cross-origin")
 		w.Header().Set("X-Content-Type-Options", "nosniff")
 		w.Header().Set("X-Frame-Options", "deny")

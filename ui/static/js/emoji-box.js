@@ -7,18 +7,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const emojiElements = stage.querySelectorAll(".dvd-emoji");
 
-    // If there are no emojis, display the in-stage empty overlay
-    if (emojiElements.length === 0) {
-        const emptyOverlay = document.createElement("div");
-        emptyOverlay.className = "stage-empty-overlay";
-        emptyOverlay.innerHTML = `
-            <span class="empty-icon">🚲</span>
-            <p>No reactions yet.<br>Be the first to react!</p>
-        `;
-        stage.appendChild(emptyOverlay);
-        return;
-    }
-
     let stageWidth = stage.clientWidth;
     let stageHeight = stage.clientHeight;
     let animationFrameId = null;
@@ -169,24 +157,85 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 });
 
-// Emoji picker keyboard toggle and event listeners
+// Curated list of allowed emojis (Cycling & outdoor themes)
+const ALLOWED_EMOJIS = [
+    { emoji: "🚴", label: "Bicycle" },
+    { emoji: "🚵", label: "Mountain Biking" },
+    { emoji: "🌲", label: "Evergreen Tree" },
+    { emoji: "⛰️", label: "Mountain" },
+    { emoji: "💨", label: "Dashing Away" },
+    { emoji: "⚡", label: "High Voltage" },
+    { emoji: "🏆", label: "Trophy" },
+];
+
+// Curated emoji picker toggle and reaction submission
 document.addEventListener("DOMContentLoaded", () => {
     const emojiPickerBtn = document.getElementById("emoji-picker-icon");
-    if (!emojiPickerBtn) {
+    const pickerMenu = document.getElementById("curated-emoji-picker");
+    const reactionForm = document.getElementById("emoji-reaction-form");
+    const emojiInput = document.getElementById("selected-emoji-input");
+
+    if (!emojiPickerBtn || !pickerMenu || !reactionForm || !emojiInput) {
         return;
     }
 
-    let emojiKeyboard = document.querySelector("emoji-picker");
-    if (!emojiKeyboard) {
-        emojiKeyboard = document.createElement("emoji-picker");
-        emojiKeyboard.classList.add("hidden");
-        emojiPickerBtn.insertAdjacentElement("afterend", emojiKeyboard);
-    }
+    // Populate picker grid from ALLOWED_EMOJIS config array
+    pickerMenu.innerHTML = "";
+    const grid = document.createElement("div");
+    grid.className = "curated-emoji-grid";
+    grid.setAttribute("role", "listbox");
+    grid.setAttribute("aria-label", "Choose an emoji reaction");
 
+    const emojiButtons = [];
+
+    ALLOWED_EMOJIS.forEach(({ emoji, label }, index) => {
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "curated-emoji-btn";
+        btn.setAttribute("role", "option");
+        btn.setAttribute("aria-label", label);
+        btn.title = label;
+        btn.textContent = emoji;
+
+        // Auto-submit immediately on click
+        btn.addEventListener("click", (event) => {
+            event.stopPropagation();
+            emojiInput.value = emoji;
+            pickerMenu.classList.add("hidden");
+            emojiPickerBtn.setAttribute("aria-expanded", "false");
+            reactionForm.submit();
+        });
+
+        // Arrow key navigation within the picker
+        btn.addEventListener("keydown", (event) => {
+            let nextIndex = null;
+            if (event.key === "ArrowRight" || event.key === "ArrowDown") {
+                nextIndex = (index + 1) % emojiButtons.length;
+            } else if (event.key === "ArrowLeft" || event.key === "ArrowUp") {
+                nextIndex = (index - 1 + emojiButtons.length) % emojiButtons.length;
+            }
+
+            if (nextIndex !== null) {
+                event.preventDefault();
+                emojiButtons[nextIndex].focus();
+            }
+        });
+
+        emojiButtons.push(btn);
+        grid.appendChild(btn);
+    });
+
+    pickerMenu.appendChild(grid);
+
+    // Toggle popover on button click
     emojiPickerBtn.addEventListener("click", (event) => {
         event.stopPropagation();
-        const isHidden = emojiKeyboard.classList.toggle("hidden");
+        const isHidden = pickerMenu.classList.toggle("hidden");
         emojiPickerBtn.setAttribute("aria-expanded", String(!isHidden));
+
+        if (!isHidden && emojiButtons.length > 0) {
+            emojiButtons[0].focus();
+        }
     });
 
     emojiPickerBtn.addEventListener("keydown", (event) => {
@@ -196,20 +245,16 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-    emojiKeyboard.addEventListener("emoji-click", (event) => {
-        console.log(event.detail);
-    });
-
-    // Prevent clicks inside the emoji keyboard from closing it
-    emojiKeyboard.addEventListener("click", (event) => {
+    // Prevent clicks inside the menu from closing it
+    pickerMenu.addEventListener("click", (event) => {
         event.stopPropagation();
     });
 
     // Close when clicking outside
     document.addEventListener("click", (event) => {
-        if (!emojiPickerBtn.contains(event.target) && !emojiKeyboard.contains(event.target)) {
-            if (!emojiKeyboard.classList.contains("hidden")) {
-                emojiKeyboard.classList.add("hidden");
+        if (!emojiPickerBtn.contains(event.target) && !pickerMenu.contains(event.target)) {
+            if (!pickerMenu.classList.contains("hidden")) {
+                pickerMenu.classList.add("hidden");
                 emojiPickerBtn.setAttribute("aria-expanded", "false");
             }
         }
@@ -217,8 +262,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Close on Escape key
     document.addEventListener("keydown", (event) => {
-        if (event.key === "Escape" && !emojiKeyboard.classList.contains("hidden")) {
-            emojiKeyboard.classList.add("hidden");
+        if (event.key === "Escape" && !pickerMenu.classList.contains("hidden")) {
+            pickerMenu.classList.add("hidden");
             emojiPickerBtn.setAttribute("aria-expanded", "false");
             emojiPickerBtn.focus();
         }

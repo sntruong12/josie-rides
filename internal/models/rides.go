@@ -91,8 +91,9 @@ func (m *RideModel) Get(id int) (*Ride, error) {
 		if err := rows.Scan(&r.ID, &r.Title, &r.Description, &r.TrailName, &r.DistanceMiles, &r.Duration, &r.RodeAt, &r.CreatedAt, &r.Media, &emojiVal); err != nil {
 			return nil, err
 		}
-
-		r.Emojis = append(r.Emojis, emojiVal.String)
+		if emojiVal.Valid && emojiVal.String != "" {
+			r.Emojis = append(r.Emojis, emojiVal.String)
+		}
 	}
 
 	if err := rows.Err(); err != nil {
