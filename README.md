@@ -236,6 +236,13 @@ ALTER USER 'test_web'@'localhost' IDENTIFIED BY 'pass';
 8. End to end testing is a testing methodology where you test the entire application from end to end, including the UI, backend, and database. Typically done to simulate the true user experience.
 9. Integration tests verify that two or more systems that connect to each other are working, e.g. database and application.
 10. Dependency Injection is utilized at initialization of the application. Whether it's a production initialization or a testing initialization, we will inject the proper dependencies into the application. For testing initialization, this is where we will inject mocks. For production initialization, this is where we will inject the actual dependencies.
+11. Infrasture as code is a way to provision and manage infrastructure through code instead of manual processes like navigating through a cloud provider's ui. This allows for more reproducibility and consistency.
+- Terraform actions are plan and apply. A plan is a desired state + current state. Basically what terraform will do before it executes. Apply takes the plan and creates a new state. The plan transforms as the infrastructure changes, maybe new additional resources, modifying existing, or deleting resources.
+- Typical lifecycle of terraform defined in days
+    - Day 0 - landing zone
+    - Day 1 - initial deploy
+    - Day 2... - patching, updates, compliance, costs, right sizing, security
+    - Day N - decomposing the infrastructure
 
 ## CI/CD Pipeline
 
