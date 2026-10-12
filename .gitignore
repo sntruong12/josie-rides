@@ -1,2 +1,8 @@
 .agents
 tls/
+
+# Local terraform directories
+**/.terraform/*
+# Should be stored in a remote backend
+**/*.tfstate
+**/*.tfstate.*

@@ -241,8 +241,17 @@ ALTER USER 'test_web'@'localhost' IDENTIFIED BY 'pass';
 - Typical lifecycle of terraform defined in days
     - Day 0 - landing zone
     - Day 1 - initial deploy
-    - Day 2... - patching, updates, compliance, costs, right sizing, security
+    - Day 2... - patching, updates, compliance, costs, right sizing, security, policy management for future updates
     - Day N - decomposing the infrastructure
+
+## Terraform Commands
+| Command | Description |
+| ----------- | ----------- |
+| terraform init | run in the root of your terraform directory. Downloads providers configured in the main.tf file. creates the hidden .terraform directory and also creates a lock file which specifies the exact version of the providers to be used. |
+| terraform fmt | format terraform code for consistency and readability |
+| terraform validate | ensures your config files are formatted correctly and syntactically correct |
+| terraform plan | lists the infracture changes to be created/modified/deleted |
+| terraform apply | executes the plan created by terraform plan. Creates new, modifies existing, and deletes infrastructure |
 
 ## CI/CD Pipeline
 
