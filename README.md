@@ -15,6 +15,10 @@ Technology Stack:
 - Validating user inputs
 - Unit/Integration/End To End testing
 
+Infra Stack:
+- Google Cloud
+- Terraform
+
 ## Golang Notes
 
 | CLI Command | Description |
