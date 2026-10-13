@@ -257,6 +257,29 @@ ALTER USER 'test_web'@'localhost' IDENTIFIED BY 'pass';
 | terraform plan | lists the infracture changes to be created/modified/deleted |
 | terraform apply | executes the plan created by terraform plan. Creates new, modifies existing, and deletes infrastructure |
 
+## Docker Notes
+Docker is a tool for containerizing applications. It allows you to package your application and all its dependencies into a container, which can then be run on any machine that has Docker installed.
+
+A container is simply an isolated process with all of the files it needs to run.
+
+Where does it get its files and configuration? How do you share those environments?
+
+That's where container images come in. A container image is a standardized package that includes all of the files, binaries, libraries, and configurations to run a container.
+
+For a PostgreSQL image, that image will package the database binaries, config files, and other dependencies.
+
+There are two important principles of images:
+
+1. Images are immutable. Once an image is created, it can't be modified. You can only make a new image or add changes on top of it.
+
+2. Container images are composed of layers. Each layer represents a set of file system changes that add, remove, or modify files.
+
+An image registry is a centralized location for storing and sharing your container images. It can be either public or private. Docker Hub is a public registry that anyone can use and is the default registry.
+
+Docker Compose is a tool for defining and running multi-container applications. It is the key to unlocking a streamlined and efficient development and deployment experience.
+
+Compose simplifies the control of your entire application stack, making it easy to manage services, networks, and volumes in a single YAML configuration file. Then, with a single command, you create and start all the services from your configuration file.
+
 ## CI/CD Pipeline
 
 
