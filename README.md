@@ -280,6 +280,17 @@ Docker Compose is a tool for defining and running multi-container applications. 
 
 Compose simplifies the control of your entire application stack, making it easy to manage services, networks, and volumes in a single YAML configuration file. Then, with a single command, you create and start all the services from your configuration file.
 
+Dockerfile is a set up instructions for an image builder to build a container image. 
+Dockerfile typically follows these steps:
+
+Determine your base image
+Install application dependencies
+Copy in any relevant source code and/or binaries
+Configure the final image
+
+Once you have dockerfile setup, you can build the image with `docker build` command
+
+
 ## CI/CD Pipeline
 
 
