@@ -1,0 +1,50 @@
+# Dockerfile for ./cmd/web go web application
+
+# ==========================================
+# Stage 1: Build the Go application
+# ==========================================
+# matches go.mod version on Alpine Linux
+FROM golang:1.26.1-alpine AS builder
+
+# install CA certificates and timezone data
+# RUN apk --no-cache add ca-certificates tzdata
+
+# create a working directory inside image
+WORKDIR /app
+
+# copy these files into the image, last parameter is the location to save these files in image
+COPY go.mod go.sum ./
+
+# download go dependencies
+RUN go mod download
+
+# copy all files necessary to compile the app, restricted by .dockerignore file
+COPY . .
+
+# build statically linked binary with stripped debug symbols
+RUN CGO_ENABLED=0 GOOS=linux go build -ldflags="-s -w" -o /app/bin/web ./cmd/web
+
+# ==========================================
+# Stage 2: Minimal runtime image
+# ==========================================
+FROM alpine:3.24.3
+
+# create an unprivileged user to run the application
+RUN addgroup -S appgroup && adduser -S appuser -G appgroup
+
+# set working directory
+WORKDIR /app
+
+# copy system certs, timezone info, and the compiled binary from builder
+COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
+COPY --from=builder /usr/share/zoneinfo /usr/share/zoneinfo
+COPY --from=builder /app/bin/web /app/bin/web
+
+# switch to unprivileged user
+USER appuser
+
+# bind port
+EXPOSE 4000
+
+# run the app
+CMD ["/app/bin/web", "--addr", ":4000"]

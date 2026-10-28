@@ -1,0 +1,7 @@
+.agents/
+tls/
+*.pem
+*.key
+terraform/
+.git
+.gitignore
