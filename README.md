@@ -325,3 +325,4 @@ Debug mode
 7. streamline local dev for running app
 9. add yen's stop motion idea for the emoji box
 - write dockerfile
+- update middleware for session persistence with recent tls updates
