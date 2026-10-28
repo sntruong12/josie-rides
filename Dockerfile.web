@@ -8,6 +8,7 @@ FROM golang:1.26.1-alpine AS builder
 
 # install CA certificates and timezone data
 # RUN apk --no-cache add ca-certificates tzdata
+RUN apk --no-cache add tzdata
 
 # create a working directory inside image
 WORKDIR /app
@@ -29,8 +30,8 @@ RUN CGO_ENABLED=0 GOOS=linux go build -ldflags="-s -w" -o /app/bin/web ./cmd/web
 # ==========================================
 FROM alpine:3.24.3
 
-# create an unprivileged user to run the application
-RUN addgroup -S appgroup && adduser -S appuser -G appgroup
+# create an explicit unprivileged system user and group (UID/GID 10001) to run the application
+RUN addgroup -g 10001 -S appgroup && adduser -u 10001 -S -D -H -s /sbin/nologin -G appgroup appuser
 
 # set working directory
 WORKDIR /app
@@ -40,8 +41,8 @@ COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
 COPY --from=builder /usr/share/zoneinfo /usr/share/zoneinfo
 COPY --from=builder /app/bin/web /app/bin/web
 
-# switch to unprivileged user
-USER appuser
+# switch to unprivileged user in group
+USER 10001:10001
 
 # bind port
 EXPOSE 4000
